@@ -56,7 +56,6 @@ const AdminHomePage = () => {
   useEffect(() => {
     const fetchLocation = async () => {
       if (selectedRequest) {
-        console.log(selectedRequest);
         const { latitude, longitude } = selectedRequest.location;
         const name = await getLocationName(latitude, longitude);
         setStreetName(name || "N/A");
@@ -74,7 +73,7 @@ const AdminHomePage = () => {
     }
 
     try {
-      await cleanWasteAPI.post("/api/waste-requests/assign-driver", {
+      await cleanWasteAPI.post("/waste-requests/assign-driver", {
         requestId: selectedRequest._id,
         driverId: selectedDriver,
       });
@@ -132,9 +131,9 @@ const AdminHomePage = () => {
                 {selectedRequest.status === "picked-up" ? (
                   <span className="text-green-600">Picked-up</span>
                 ) : selectedRequest.status === "assigned" ? (
-                  <span className="text-red-600">Assigned</span>
+                  <span className="text-yellow-600">Assigned</span>
                 ) : (
-                  <span className="text-orange-600">Pending</span>
+                  <span className="text-red-600">Pending</span>
                 )}
                 ]
               </h2>

@@ -1,6 +1,6 @@
-import WasteRequest from '../models/WasteRequest.js';
-import { notifyUser } from './notificationService.js';
-import User from '../models/User.js';
+import WasteRequest from "../models/WasteRequest.js";
+import { notifyUser } from "./notificationService.js";
+import User from "../models/User.js";
 
 export const createWasteRequest = async (requestData) => {
   const wasteRequest = new WasteRequest(requestData);
@@ -10,13 +10,12 @@ export const createWasteRequest = async (requestData) => {
 
 export const assignDriverToWasteRequest = async (requestId, driverId) => {
   const wasteRequest = await WasteRequest.findById(requestId);
+
   wasteRequest.assignedDriver = driverId;
   wasteRequest.status = "assigned";
+
   await wasteRequest.save();
-  notifyUser(
-    wasteRequest.user,
-    "Your waste request has been assigned to a driver."
-  );
+  notifyUser(wasteRequest.user, "Your waste request has been assigned to a driver.");
   return wasteRequest;
 };
 
@@ -24,10 +23,7 @@ export const markWasteAsPickedUp = async (requestId) => {
   const wasteRequest = await WasteRequest.findById(requestId);
   wasteRequest.status = "picked-up";
   await wasteRequest.save();
-  notifyUser(
-    wasteRequest.user,
-    "Your waste has been picked up."
-  );
+  notifyUser(wasteRequest.user, "Your waste has been picked up.");
   return wasteRequest;
 };
 

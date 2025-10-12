@@ -80,7 +80,6 @@ const AdminHomePage = () => {
 
       alert("Driver assigned successfully!");
       setSelectedRequest(null);
-      setStreetName("");
       setSelectedDriver("");
     } catch (error) {
       console.error("Error assigning driver:", error);

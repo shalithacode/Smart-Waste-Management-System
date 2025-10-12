@@ -55,6 +55,7 @@ export const assignDriver = async (req, res) => {
     const { requestId, driverId } = req.body;
 
     const updatedRequest = await assignDriverToWasteRequest(requestId, driverId);
+
     res.json(updatedRequest);
   } catch (error) {
     res.status(400).json({ message: error.message });

@@ -14,7 +14,7 @@ const userSchema = new Schema(
       postalCode: { type: String, required: true },
     },
     wasteRequests: [{ type: Schema.Types.ObjectId, ref: "WasteRequest" }],
-    notifications: [{ message: String, date: { type: Date, default: Date.now } }],
+    notifications: [{ type: Schema.Types.ObjectId, ref: "Notification" }],
   },
   { timestamps: true }
 );

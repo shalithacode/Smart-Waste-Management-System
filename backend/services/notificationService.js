@@ -1,5 +1,5 @@
-import User from '../models/User.js';
-import Notification from '../models/Notification.js';
+import User from "../models/User.js";
+import Notification from "../models/Notification.js";
 
 export const notifyUser = async (userId, message) => {
   try {
@@ -7,7 +7,7 @@ export const notifyUser = async (userId, message) => {
     const notification = new Notification({
       user: userId,
       message,
-      status: 'unread',
+      status: "unread",
       date: new Date(),
     });
 
@@ -16,7 +16,7 @@ export const notifyUser = async (userId, message) => {
 
     // Optionally, you can also push the notification to the user's notifications array if needed
     const user = await User.findById(userId);
-    user.notifications.push({ message, date: notification.date });
+    user.notifications.push(notification._id); // push the ObjectId
     await user.save();
   } catch (error) {
     console.error("Error sending notification:", error.message);

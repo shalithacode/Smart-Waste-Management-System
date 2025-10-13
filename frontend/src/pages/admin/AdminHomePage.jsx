@@ -17,6 +17,9 @@ const AdminHomePage = () => {
   const [usersCount, setUsersCount] = useState(0);
   const [driversCount, setDriversCount] = useState(0);
   const [wasteRequestsCount, setWasteRequestsCount] = useState(0);
+
+  const [flexibleDate, setFlexibleDate] = useState("");
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,6 +32,7 @@ const AdminHomePage = () => {
         console.error("Error fetching waste requests:", error);
       }
     };
+
     const fetchDrivers = async () => {
       try {
         const response = await cleanWasteAPI.get("/users/drivers");
@@ -72,15 +76,24 @@ const AdminHomePage = () => {
       return;
     }
 
+    if (selectedRequest.pickupOption === "Flexible Pickup" && !flexibleDate) {
+      alert("Please select a date for Flexible Pickup!");
+      return;
+    }
+
     try {
       await cleanWasteAPI.post("/waste-requests/assign-driver", {
         requestId: selectedRequest._id,
         driverId: selectedDriver,
+
+        pickupDate:
+          selectedRequest.pickupOption === "Flexible Pickup" ? flexibleDate : selectedRequest.pickupDate || Date.now(),
       });
 
       alert("Driver assigned successfully!");
       setSelectedRequest(null);
       setSelectedDriver("");
+      setFlexibleDate("");
     } catch (error) {
       console.error("Error assigning driver:", error);
       alert("Failed to assign driver.");
@@ -89,19 +102,17 @@ const AdminHomePage = () => {
 
   const handleWasteRequestSelect = (request) => {
     setSelectedRequest(request);
+    setFlexibleDate(""); // Reset flexible date when selecting a new request
   };
 
   return (
-    <div className="flex  min-h-screen">
-      {/* Vertical Sidebar */}
+    <div className="flex min-h-screen">
       <AdminNav />
-
-      {/* Main Content Area */}
       <main className="flex-1">
         <div className="md:ml-64 p-6">
           <h1 className="text-3xl sm:text-4xl font-extrabold text-[#175E5E] mb-8 text-center">Admin Dashboard</h1>
 
-          {/* Statistics Cards */}
+          {/* Stats Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div className="bg-white shadow-md rounded-lg p-6 border-l-4 border-[#175E5E]">
               <h2 className="text-xl font-semibold text-[#175E5E]">Total Customers</h2>
@@ -119,10 +130,10 @@ const AdminHomePage = () => {
             </div>
           </div>
 
-          {/* Map Section */}
+          {/* Map */}
           <Map wasteRequests={wasteRequests} onRequestSelect={handleWasteRequestSelect} />
 
-          {/* Assign Driver Section */}
+          {/* Request Details */}
           {selectedRequest && (
             <div className="mt-8 w-full max-w-md bg-white p-4 rounded-lg shadow-md mx-auto">
               <h2 className="text-xl font-bold text-[#175E5E] mb-4">
@@ -138,10 +149,12 @@ const AdminHomePage = () => {
               </h2>
 
               <p className="mb-4 text-gray-700">
-                Waste Code:<span className="font-bold"> {selectedRequest.wasteCode}</span>
+                Waste Code:
+                <span className="font-bold"> {selectedRequest.wasteCode}</span>
               </p>
               <p className="mb-4 text-gray-700">
-                Location:<span className="font-bold"> {streetName}</span>
+                Location:
+                <span className="font-bold"> {streetName}</span>
               </p>
               <p className="mb-4 text-gray-700">Waste Types:</p>
               <div className="flex flex-wrap gap-2 mb-4">
@@ -155,9 +168,38 @@ const AdminHomePage = () => {
                 ))}
               </div>
               <p className="mb-4 text-gray-700">
-                Collection Type:<span className="font-bold"> {selectedRequest.pickupOption}</span>
+                Collection Type:
+                <span className="font-bold"> {selectedRequest.pickupOption}</span>
               </p>
-              {selectedRequest.status === "pending" ? (
+
+              {/* ✅ NEW: Show or allow date input based on pickup option */}
+              {selectedRequest.pickupOption === "Scheduled Pickup" && (
+                <p className="mb-4 text-gray-700">
+                  Scheduled Date:
+                  <span className="font-bold">
+                    {" "}
+                    {selectedRequest.pickupDate ? new Date(selectedRequest.pickupDate).toLocaleDateString() : "N/A"}
+                  </span>
+                </p>
+              )}
+
+              {selectedRequest.pickupOption === "Flexible Pickup" && selectedRequest.status === "pending" && (
+                <div className="mb-4">
+                  <label htmlFor="flexibleDate" className="block mb-1 font-semibold text-gray-700">
+                    Select Preferred Pickup Date:
+                  </label>
+                  <input
+                    type="date"
+                    id="flexibleDate"
+                    value={flexibleDate}
+                    onChange={(e) => setFlexibleDate(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md"
+                    min={new Date().toISOString().split("T")[0]}
+                  />
+                </div>
+              )}
+
+              {selectedRequest.status === "pending" && (
                 <>
                   <div className="mb-4">
                     <label htmlFor="driver" className="block mb-1 font-semibold text-gray-700">
@@ -183,8 +225,6 @@ const AdminHomePage = () => {
                     className="px-4 py-2 bg-[#175E5E] text-white rounded-lg shadow-lg hover:bg-[#134c4c] transition duration-300"
                   />
                 </>
-              ) : (
-                ""
               )}
             </div>
           )}

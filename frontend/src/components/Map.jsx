@@ -70,17 +70,20 @@ const Map = ({ wasteRequests, onRequestSelect }) => {
       zoom={12} // Zoom level when showing user's location
     >
       {/* Display markers for all waste requests */}
-      {wasteRequests.map((request, index) => (
-        <Marker
-          key={index}
-          position={{
-            lat: request.location.latitude,
-            lng: request.location.longitude,
-          }}
-          icon={getMarkerIcon(request.status)} // ✅ Apply color based on request type
-          onClick={() => onRequestSelect(request)} // Select request on marker click
-        />
-      ))}
+      {wasteRequests.map((request, index) => {
+        console.log(request);
+        return (
+          <Marker
+            key={index}
+            position={{
+              lat: request.location.latitude,
+              lng: request.location.longitude,
+            }}
+            icon={getMarkerIcon(request.status)}
+            onClick={() => onRequestSelect(request)} // Select request on marker click
+          />
+        );
+      })}
     </GoogleMap>
   );
 };

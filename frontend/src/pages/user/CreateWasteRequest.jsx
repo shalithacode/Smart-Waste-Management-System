@@ -10,7 +10,7 @@ import { useAuth } from "../../context/AuthContext";
 
 const CreateWasteRequest = () => {
   const location = useLocation();
-  const { selectedPickupOption, wasteQuantity } = location.state || {};
+  const { selectedPickupOption, wasteQuantity, pickupDate } = location.state || {};
   const [pickupLocation, setPickupLocation] = useState(null);
   const { auth } = useAuth();
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const CreateWasteRequest = () => {
         waste: wasteQuantity,
         pickupOption: selectedPickupOption,
         location: pickupLocation,
+        pickupDate: pickupDate,
         userId: auth.user._id,
       });
 

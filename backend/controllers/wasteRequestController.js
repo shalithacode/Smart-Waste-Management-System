@@ -16,7 +16,7 @@ const generateWasteCode = () => {
 
 export const createWasteRequest = async (req, res) => {
   try {
-    const { waste, location, userId, pickupOption } = req.body;
+    const { waste, location, userId, pickupOption, pickupDate } = req.body;
 
     if (!location || !location.latitude || !location.longitude) {
       return res.status(400).json({
@@ -30,6 +30,7 @@ export const createWasteRequest = async (req, res) => {
     let wasteRequest = await createWasteRequestService({
       wasteItems: waste,
       pickupOption,
+      pickupDate,
       location,
       user: userId,
       wasteCode,

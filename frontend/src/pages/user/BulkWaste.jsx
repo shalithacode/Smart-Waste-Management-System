@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import UserNav from "../../components/UserNav"; // Import UserNav
-import Footer from "../../components/Footer"; // Import Footer
-import Button from "../../components/Button"; // Import Button
+import UserNav from "../../components/UserNav";
+import Footer from "../../components/Footer";
+import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
 const wasteTypes = [
@@ -20,70 +20,70 @@ const pickupOptions = [
 ];
 
 const BulkWaste = () => {
-  const [selectedWasteTypes, setSelectedWasteTypes] = useState([]); // Array of selected waste types
+  const [selectedWasteTypes, setSelectedWasteTypes] = useState([]);
   const [wasteQuantity, setWasteQuantity] = useState([]);
   const [selectedPickupOption, setSelectedPickupOption] = useState("");
+  const [pickupDate, setPickupDate] = useState("");
   const navigate = useNavigate();
 
-  // Toggle waste type selection
   const handleWasteTypeSelection = (wasteType) => {
-    setSelectedWasteTypes(
-      (prevSelected) =>
-        prevSelected.includes(wasteType)
-          ? prevSelected.filter((type) => type !== wasteType) // Remove if already selected
-          : [...prevSelected, wasteType] // Add to selected list
+    setSelectedWasteTypes((prevSelected) =>
+      prevSelected.includes(wasteType)
+        ? prevSelected.filter((type) => type !== wasteType)
+        : [...prevSelected, wasteType]
     );
   };
-  // handleWasteQty updates or adds a new waste type entry
+
   function handleWasteQty(type, quantity) {
     setWasteQuantity((prevQty) => {
       const existingIndex = prevQty.findIndex((item) => item.type === type);
-
       if (existingIndex !== -1) {
-        // Update existing type
         const updated = [...prevQty];
         updated[existingIndex] = { type, quantity: Number(quantity) };
         return updated;
       } else {
-        // Add new type
         return [...prevQty, { type, quantity: Number(quantity) }];
       }
     });
   }
 
-  // Handler for form submission
   const handleSubmit = (e) => {
     e.preventDefault();
+
     if (wasteQuantity.length === 0 || wasteQuantity <= 0 || !selectedPickupOption) {
       alert("Please complete all steps!");
       return;
     }
 
-    // Navigate to the WasteTypeSelection page with selected waste types
-    navigate("/sorting-guidelines", { state: { wasteQuantity, selectedPickupOption } });
+    // ✅ Validate date for scheduled pickup
+    if (selectedPickupOption === "Scheduled Pickup" && !pickupDate) {
+      alert("Please select a pickup date for Scheduled Pickup!");
+      return;
+    }
+
+    navigate("/sorting-guidelines", {
+      state: { wasteQuantity, selectedPickupOption, pickupDate },
+    });
   };
 
-  // Inline style for light grey grid background
   const gridBackgroundStyle = {
     backgroundImage: `
       linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
       linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)
     `,
-    backgroundSize: "10px 10px", // Smaller grid size
+    backgroundSize: "10px 10px",
     width: "100%",
-    minHeight: "100vh", // Full-screen grid background
+    minHeight: "100vh",
   };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100" style={gridBackgroundStyle}>
-      <UserNav /> {/* Add UserNav */}
+      <UserNav />
       <main className="flex-grow flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8 md:ml-64">
         <h1 className="text-4xl font-extrabold text-teal-800 mb-8 text-center">Bulk Waste Pickup Request</h1>
 
-        {/* Step 1: Select Waste Type */}
+        {/* Step 1 */}
         <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8 border border-gray-300">
-          {" "}
-          {/* Increased max width */}
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 1: Select Waste Type</h2>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {wasteTypes.map((waste) => (
@@ -101,6 +101,7 @@ const BulkWaste = () => {
           </div>
         </div>
 
+        {/* Step 2 */}
         <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8 border border-gray-300">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 2: Enter Waste Quantity</h2>
 
@@ -110,13 +111,10 @@ const BulkWaste = () => {
 
             return (
               <div key={selectedType} className="mb-6 border-b border-gray-200 pb-4 last:border-b-0">
-                {/* Waste Type Title */}
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-lg font-semibold text-teal-700">{selectedType}</h3>
                   <span className="text-sm font-bold">{qtyValue} kg</span>
                 </div>
-
-                {/* Quantity Slider */}
                 <input
                   type="range"
                   min="0"
@@ -130,10 +128,8 @@ const BulkWaste = () => {
           })}
         </div>
 
-        {/* Step 3: Choose Pickup Option */}
+        {/* Step 3 */}
         <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8 border border-gray-300">
-          {" "}
-          {/* Increased max width */}
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 3: Choose Pickup Option</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {pickupOptions.map((pickup) => (
@@ -151,6 +147,20 @@ const BulkWaste = () => {
           </div>
         </div>
 
+        {/* ✅ Step 4: Only if Scheduled Pickup is selected */}
+        {selectedPickupOption === "Scheduled Pickup" && (
+          <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8 border border-gray-300">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 4: Select Pickup Date</h2>
+            <input
+              type="date"
+              value={pickupDate}
+              onChange={(e) => setPickupDate(e.target.value)}
+              className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-600"
+              min={new Date().toISOString().split("T")[0]} // prevent past dates
+            />
+          </div>
+        )}
+
         {/* Submit Button */}
         <Button
           text="Submit Request"
@@ -158,7 +168,7 @@ const BulkWaste = () => {
           onClick={handleSubmit}
         />
       </main>
-      <Footer /> {/* Add Footer */}
+      <Footer />
     </div>
   );
 };

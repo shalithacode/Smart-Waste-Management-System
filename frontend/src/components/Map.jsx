@@ -71,7 +71,6 @@ const Map = ({ wasteRequests, onRequestSelect }) => {
     >
       {/* Display markers for all waste requests */}
       {wasteRequests.map((request, index) => {
-        console.log(request);
         return (
           <Marker
             key={index}

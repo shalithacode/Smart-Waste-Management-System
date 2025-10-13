@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
+import cleanWasteAPI from "../api/cleanWasteAPI"; // make sure path is correct
 
 const UserNav = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0); // new state for unread notifications
   const { auth, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,6 +17,22 @@ const UserNav = () => {
     logout();
     navigate("/");
   };
+
+  // Fetch unread notifications count
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const response = await cleanWasteAPI.get("/notifications/");
+        const notifications = response.data.notifications || [];
+        const unread = notifications.filter((n) => n.status === "unread").length;
+        setUnreadCount(unread);
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+
+    if (auth?.user) fetchUnreadCount();
+  }, [auth]);
 
   // Navigation links (customized for user dashboard)
   const navLinks = [
@@ -45,19 +63,28 @@ const UserNav = () => {
 
         {/* Navigation Links */}
         <div className="flex-1 px-4 py-6 space-y-2">
-          {navLinks.map((link) => (
-            <Link
-              key={link.to}
-              to={link.to}
-              className={`block px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
-                location.pathname === link.to
-                  ? "bg-[#134c4c] text-yellow-400"
-                  : "hover:text-yellow-400 hover:bg-[#134c4c]"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isNotifications = link.to === "/notifications";
+            return (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`relative block px-3 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                  location.pathname === link.to
+                    ? "bg-[#134c4c] text-yellow-400"
+                    : "hover:text-yellow-400 hover:bg-[#134c4c]"
+                }`}
+              >
+                {link.label}
+                {/* Show unread badge for notifications */}
+                {isNotifications && unreadCount > 0 && (
+                  <span className="absolute top-1 right-3 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-500 rounded-full">
+                    {unreadCount}
+                  </span>
+                )}
+              </Link>
+            );
+          })}
         </div>
 
         {/* Auth Buttons */}

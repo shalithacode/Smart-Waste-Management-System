@@ -13,7 +13,7 @@ const UserNotification = () => {
       try {
         const response = await cleanWasteAPI.get("/notifications/");
         // Assuming user's notifications are in profile data
-        console.log(notifications);
+
         setNotifications(response.data.notifications || []);
       } catch (error) {
         console.error("Error fetching notifications:", error);
@@ -49,7 +49,7 @@ const UserNotification = () => {
 
   return (
     <div className="min-h-screen flex flex-col" style={gridBackgroundStyle}>
-      <UserNav />
+      <UserNav key={notifications} />
 
       <div className="flex flex-1">
         <main className="flex-1 p-4 lg:ml-56">

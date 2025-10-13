@@ -1,13 +1,14 @@
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
 
-export const notifyUser = async (userId, message) => {
+export const notifyUser = async (userId, message, type) => {
   try {
     // Create a new notification document
     const notification = new Notification({
       user: userId,
       message,
       status: "unread",
+      type,
       date: new Date(),
     });
 

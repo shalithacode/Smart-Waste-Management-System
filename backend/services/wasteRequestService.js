@@ -26,14 +26,14 @@ export const rejectWasteRequest = async (requestId, message) => {
   wasteRequest.pickupDate = null;
 
   await wasteRequest.save();
-  notifyUser(wasteRequest.user, "Your waste request has been rejected. " + message);
+  notifyUser(wasteRequest.user, "Your waste request has been rejected : " + message, "warn");
   return wasteRequest;
 };
 export const markWasteAsPickedUp = async (requestId) => {
   const wasteRequest = await WasteRequest.findById(requestId);
   wasteRequest.status = "picked-up";
   await wasteRequest.save();
-  notifyUser(wasteRequest.user, "Your waste has been picked up.");
+  notifyUser(wasteRequest.user, "Your waste has been picked up.", "info");
   return wasteRequest;
 };
 

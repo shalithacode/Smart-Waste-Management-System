@@ -6,7 +6,7 @@ import cleanWasteAPI from "../../../api/cleanWasteAPI";
 
 const UserNotification = () => {
   const [notifications, setNotifications] = useState([]);
-  console.log(notifications);
+
   useEffect(() => {
     // Fetch user notifications from the backend
     const fetchNotifications = async () => {
@@ -21,7 +21,7 @@ const UserNotification = () => {
     };
 
     fetchNotifications();
-  }, []);
+  }, [notifications]);
 
   const handleMarkAsRead = async (notificationId) => {
     try {
@@ -58,11 +58,12 @@ const UserNotification = () => {
           <ul className="w-full max-w-4xl mx-auto">
             {notifications.map((notification, index) => {
               const status = notification.status || "unread"; // fallback
+              const type = notification.type || "info";
               return (
                 <li
                   key={index}
-                  className={`bg-white shadow-md rounded-lg p-6 border-l-4 ${
-                    status === "read" ? "border-green-500" : "border-yellow-400"
+                  className={`bg-white shadow-md rounded-lg p-6 mb-6 border-l-4 ${
+                    type === "info" ? "border-yellow-500" : "border-red-400"
                   }`}
                 >
                   <p className={`text-lg font-semibold text-gray-700`}>{notification.message}</p>

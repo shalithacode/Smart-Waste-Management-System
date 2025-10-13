@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-
+import { getStatusColor } from "../util/customStyles";
 // Map container style
 const containerStyle = {
   width: "100%",
@@ -38,24 +38,9 @@ const Map = ({ wasteRequests, onRequestSelect }) => {
 
   // Function to get marker color based on request status
   const getMarkerIcon = (status) => {
-    let color;
-    switch (status) {
-      case "pending":
-        color = "red";
-        break;
-      case "assigned":
-        color = "yellow";
-        break;
-      case "picked-up":
-        color = "green";
-        break;
-      default:
-        color = "blue"; // fallback color
-    }
-
     // Use Google Charts API to generate colored marker
     return {
-      url: `https://maps.google.com/mapfiles/ms/icons/${color}-dot.png`,
+      url: `https://maps.google.com/mapfiles/ms/icons/${getStatusColor(status)}-dot.png`,
     };
   };
 
@@ -70,19 +55,20 @@ const Map = ({ wasteRequests, onRequestSelect }) => {
       zoom={12} // Zoom level when showing user's location
     >
       {/* Display markers for all waste requests */}
-      {wasteRequests.map((request, index) => {
-        return (
-          <Marker
-            key={index}
-            position={{
-              lat: request.location.latitude,
-              lng: request.location.longitude,
-            }}
-            icon={getMarkerIcon(request.status)}
-            onClick={() => onRequestSelect(request)} // Select request on marker click
-          />
-        );
-      })}
+      {wasteRequests &&
+        wasteRequests.map((request, index) => {
+          return (
+            <Marker
+              key={index}
+              position={{
+                lat: request.location.latitude,
+                lng: request.location.longitude,
+              }}
+              icon={getMarkerIcon(request.status)}
+              onClick={() => onRequestSelect(request)} // Select request on marker click
+            />
+          );
+        })}
     </GoogleMap>
   );
 };

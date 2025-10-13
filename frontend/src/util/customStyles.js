@@ -8,3 +8,20 @@ export const gridBackgroundStyle = {
   width: "100%",
   minHeight: "100vh", // Full-screen grid background
 };
+export const getStatusColor = (status) => {
+  let color;
+  switch (status) {
+    case "pending":
+      color = "gray";
+      break;
+    case "assigned":
+      color = "yellow";
+      break;
+    case "picked-up":
+      color = "green";
+      break;
+    default:
+      color = "red"; // fallback color
+  }
+  return color;
+};

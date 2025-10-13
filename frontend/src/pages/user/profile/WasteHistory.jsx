@@ -25,7 +25,7 @@ const WasteHistory = () => {
 
   return (
     <div className="w-full overflow-x-auto px-4 sm:px-6 py-4">
-      <h2 className="text-xl font-semibold text-[#175E5E] mb-6">Your Waste Collection Request History</h2>
+      <h2 className="text-xl font-semibold text-[#175E5E] mb-6">Your Waste Request History</h2>
       <table className="min-w-full bg-white shadow-md rounded-lg w-full">
         <thead>
           <tr className="bg-[#175E5E] text-white text-left text-xs sm:text-sm md:text-base">

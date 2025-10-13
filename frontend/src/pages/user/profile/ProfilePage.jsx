@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserNav from "../../../components/UserNav"; // Adjust the path as needed
 import Footer from "../../../components/Footer"; // Adjust the path as needed
-
+import { getStatusColor } from "../../../util/customStyles";
 import cleanWasteAPI from "../../../api/cleanWasteAPI"; // Import your Axios instance
 import { useAuth } from "../../../context/AuthContext"; // Import auth context to get the logged-in user
 import { getLocationName } from "../../../util/location";
@@ -62,7 +62,9 @@ const ProfilePage = () => {
       <div className="flex flex-1 flex-col lg:flex-row ">
         {/* Main content */}
         <main className="flex-1 p-4 lg:ml-64 md:ml-64">
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-4">Waste Request History</h1>
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-4">
+            Waste Collection Request History
+          </h1>
           <p className="text-gray-600 text-center mb-6">Here is the list of your waste requests.</p>
 
           {/* Waste Request History Table */}
@@ -72,8 +74,9 @@ const ProfilePage = () => {
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-semibold">Waste Type</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">Location</th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold">Status</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">Created At</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold">Date</th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold">Status</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
@@ -86,15 +89,15 @@ const ProfilePage = () => {
                       <td className="px-6 py-4 text-sm text-gray-700">
                         {locationNames[request._id] || `${request.location.latitude}, ${request.location.longitude}`}
                       </td>
-                      <td
-                        className={`px-6 py-4 text-sm font-medium ${
-                          request.status === "pending" ? "text-yellow-500" : "text-green-500"
-                        }`}
-                      >
-                        {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
-                      </td>
                       <td className="px-6 py-4 text-sm text-gray-700">
                         {new Date(request.createdAt).toLocaleDateString()}
+                      </td>
+                      <td className="px-6 py-4 text-sm text-gray-700">
+                        {request.pickupDate ? new Date().toLocaleDateString() : "-"}
+                      </td>
+
+                      <td className={`px-6 py-4 text-sm font-bold text-${getStatusColor(request.status)}-500 `}>
+                        {request.status.charAt(0).toUpperCase() + request.status.slice(1)}
                       </td>
                     </tr>
                   ))

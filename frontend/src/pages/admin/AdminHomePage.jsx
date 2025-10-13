@@ -17,8 +17,11 @@ const AdminHomePage = () => {
   const [usersCount, setUsersCount] = useState(0);
   const [driversCount, setDriversCount] = useState(0);
   const [wasteRequestsCount, setWasteRequestsCount] = useState(0);
-
   const [flexibleDate, setFlexibleDate] = useState("");
+
+  // New modal states
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectionMessage, setRejectionMessage] = useState("");
 
   const navigate = useNavigate();
 
@@ -85,7 +88,6 @@ const AdminHomePage = () => {
       await cleanWasteAPI.post("/waste-requests/assign-driver", {
         requestId: selectedRequest._id,
         driverId: selectedDriver,
-
         pickupDate:
           selectedRequest.pickupOption === "Flexible Pickup" ? flexibleDate : selectedRequest.pickupDate || Date.now(),
       });
@@ -100,9 +102,32 @@ const AdminHomePage = () => {
     }
   };
 
+  const handleRejectRequest = async () => {
+    if (!selectedRequest) return;
+    if (!rejectionMessage.trim()) {
+      alert("Please enter a rejection message.");
+      return;
+    }
+
+    try {
+      await cleanWasteAPI.post("/waste-requests/reject-request", {
+        requestId: selectedRequest._id,
+        message: rejectionMessage,
+      });
+
+      alert("Request rejected successfully!");
+      setShowRejectModal(false);
+      setRejectionMessage("");
+      setSelectedRequest(null);
+    } catch (error) {
+      console.error("Error rejecting request:", error);
+      alert("Failed to reject request.");
+    }
+  };
+
   const handleWasteRequestSelect = (request) => {
     setSelectedRequest(request);
-    setFlexibleDate(""); // Reset flexible date when selecting a new request
+    setFlexibleDate("");
   };
 
   return (
@@ -130,14 +155,15 @@ const AdminHomePage = () => {
             </div>
           </div>
 
-          {/* Map and Request Details Section */}
-          <div className="flex flex-col lg:flex-row lg:items-start md:items-center md:justify-center-safe  lg:space-x-6">
-            {/* Map Container */}
-            <div className="w-full lg:w-2/3 bg-white rounded-lg shadow-md mb-6 md:mb-3">
-              <Map wasteRequests={wasteRequests} onRequestSelect={handleWasteRequestSelect} />
+          {/* Map + Request Details Side-by-Side */}
+          <div className="flex flex-col items-start lg:flex-row lg:space-x-6">
+            <div className="w-full lg:w-2/3 bg-white rounded-lg shadow-md mb-6 lg:mb-0">
+              <Map
+                wasteRequests={wasteRequests.filter((resquest) => resquest.status !== "rejected")}
+                onRequestSelect={handleWasteRequestSelect}
+              />
             </div>
 
-            {/* Request Details Container */}
             {selectedRequest && (
               <div className="w-full lg:w-1/3 bg-white p-4 rounded-lg shadow-md">
                 <h2 className="text-xl font-bold text-[#175E5E] mb-4">
@@ -176,7 +202,6 @@ const AdminHomePage = () => {
                   <span className="font-bold"> {selectedRequest.pickupOption}</span>
                 </p>
 
-                {/* Scheduled Pickup Date */}
                 {selectedRequest.pickupOption === "Scheduled Pickup" && (
                   <p className="mb-4 text-gray-700">
                     Scheduled Date:
@@ -187,7 +212,6 @@ const AdminHomePage = () => {
                   </p>
                 )}
 
-                {/* Flexible Pickup Date Input */}
                 {selectedRequest.pickupOption === "Flexible Pickup" && selectedRequest.status === "pending" && (
                   <div className="mb-4">
                     <label htmlFor="flexibleDate" className="block mb-1 font-semibold text-gray-700">
@@ -204,7 +228,6 @@ const AdminHomePage = () => {
                   </div>
                 )}
 
-                {/* Driver Selection */}
                 {selectedRequest.status === "pending" && (
                   <>
                     <div className="mb-4">
@@ -225,11 +248,19 @@ const AdminHomePage = () => {
                         ))}
                       </select>
                     </div>
-                    <Button
-                      text="Assign Driver"
-                      onClick={handleAssignDriver}
-                      className="px-4 py-2 bg-[#175E5E] text-white rounded-lg shadow-lg hover:bg-[#134c4c] transition duration-300"
-                    />
+
+                    <div className="flex gap-3">
+                      <Button
+                        text="Assign Driver"
+                        onClick={handleAssignDriver}
+                        className="flex-1 px-4 py-2 bg-[#175E5E] text-white rounded-lg shadow-lg hover:bg-[#134c4c] transition duration-300"
+                      />
+                      <Button
+                        text="Reject"
+                        onClick={() => setShowRejectModal(true)}
+                        className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg shadow-lg hover:bg-red-700 transition duration-300"
+                      />
+                    </div>
                   </>
                 )}
               </div>
@@ -238,6 +269,35 @@ const AdminHomePage = () => {
         </div>
         <Footer />
       </main>
+
+      {/* Reject Modal */}
+      {showRejectModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
+          <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+            <h2 className="text-xl font-semibold text-gray-800 mb-4">Reject Waste Request</h2>
+            <textarea
+              value={rejectionMessage}
+              onChange={(e) => setRejectionMessage(e.target.value)}
+              placeholder="Enter rejection message..."
+              className="w-full h-24 border rounded-md p-2 mb-4"
+            />
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowRejectModal(false)}
+                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleRejectRequest}
+                className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
+              >
+                Confirm Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

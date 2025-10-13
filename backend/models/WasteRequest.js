@@ -80,7 +80,7 @@ const wasteRequestSchema = new Schema(
 
     status: {
       type: String,
-      enum: ["pending", "assigned", "picked-up"],
+      enum: ["pending", "assigned", "picked-up", "rejected"],
       default: "pending",
     },
     pickupOption: {

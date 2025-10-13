@@ -18,7 +18,17 @@ export const assignDriverToWasteRequest = async (requestId, driverId) => {
   notifyUser(wasteRequest.user, "Your waste request has been assigned to a driver.");
   return wasteRequest;
 };
+export const rejectWasteRequest = async (requestId, message) => {
+  const wasteRequest = await WasteRequest.findById(requestId);
 
+  wasteRequest.assignedDriver = null;
+  wasteRequest.status = "rejected";
+  wasteRequest.pickupDate = null;
+
+  await wasteRequest.save();
+  notifyUser(wasteRequest.user, "Your waste request has been rejected. " + message);
+  return wasteRequest;
+};
 export const markWasteAsPickedUp = async (requestId) => {
   const wasteRequest = await WasteRequest.findById(requestId);
   wasteRequest.status = "picked-up";

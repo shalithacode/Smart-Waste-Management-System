@@ -2,6 +2,7 @@ import express from "express";
 import {
   createWasteRequest,
   assignDriver,
+  rejectRequest,
   getAllWasteRequests,
   markAsPickedUp,
   getUserWasteRequests,
@@ -15,6 +16,9 @@ router.post("/create", verifyToken, createWasteRequest);
 
 // Assign driver to a waste request (admin-specific)
 router.post("/assign-driver", verifyToken, isAdmin, assignDriver);
+
+// Assign reject the waste request (admin-specific)
+router.post("/reject-request", verifyToken, isAdmin, rejectRequest);
 
 // Get all waste requests (user-specific)
 router.get("/all-waste-requests", verifyToken, getAllWasteRequests);

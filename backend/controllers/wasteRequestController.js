@@ -3,6 +3,7 @@ import {
   assignDriverToWasteRequest,
   markWasteAsPickedUp as markWasteAsPickedUpService,
   getAllWasteRequests as getAllWasteRequestsService,
+  rejectWasteRequest,
   getWasteRequestsByUserId,
 } from "../services/wasteRequestService.js";
 import qrcode from "qrcode"; // Import QR code library
@@ -62,7 +63,17 @@ export const assignDriver = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+export const rejectRequest = async (req, res) => {
+  try {
+    const { requestId, message } = req.body;
 
+    const updatedRequest = await rejectWasteRequest(requestId, message);
+
+    res.json(updatedRequest);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
 export const markAsPickedUp = async (req, res) => {
   try {
     const { requestId } = req.body;

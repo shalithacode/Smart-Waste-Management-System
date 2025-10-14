@@ -93,7 +93,7 @@ const ProfilePage = () => {
                         {new Date(request.createdAt).toLocaleDateString()}
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-700">
-                        {request.pickupDate ? new Date().toLocaleDateString() : "-"}
+                        {request.pickupDate ? new Date(request.pickupDate).toLocaleDateString() : "-"}
                       </td>
 
                       <td className={`px-6 py-4 text-sm font-bold text-${getStatusColor(request.status)}-500 `}>

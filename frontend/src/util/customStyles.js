@@ -12,7 +12,7 @@ export const getStatusColor = (status) => {
   let color;
   switch (status) {
     case "pending":
-      color = "gray";
+      color = "blue";
       break;
     case "assigned":
       color = "yellow";
@@ -20,8 +20,11 @@ export const getStatusColor = (status) => {
     case "picked-up":
       color = "green";
       break;
+    case "rejected":
+      color = "red";
+      break;
     default:
-      color = "red"; // fallback color
+      color = "gray"; // fallback color
   }
   return color;
 };

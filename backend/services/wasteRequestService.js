@@ -8,11 +8,12 @@ export const createWasteRequest = async (requestData) => {
   return wasteRequest;
 };
 
-export const assignDriverToWasteRequest = async (requestId, driverId) => {
+export const assignDriverToWasteRequest = async (requestId, driverId, pickupDate) => {
   const wasteRequest = await WasteRequest.findById(requestId);
 
   wasteRequest.assignedDriver = driverId;
   wasteRequest.status = "assigned";
+  wasteRequest.pickupDate = pickupDate;
 
   await wasteRequest.save();
   notifyUser(wasteRequest.user, "Your waste request has been assigned to a driver.", "info");

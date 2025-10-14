@@ -54,9 +54,9 @@ export const createWasteRequest = async (req, res) => {
 
 export const assignDriver = async (req, res) => {
   try {
-    const { requestId, driverId } = req.body;
+    const { requestId, driverId, pickupDate } = req.body;
 
-    const updatedRequest = await assignDriverToWasteRequest(requestId, driverId);
+    const updatedRequest = await assignDriverToWasteRequest(requestId, driverId, pickupDate);
 
     res.json(updatedRequest);
   } catch (error) {

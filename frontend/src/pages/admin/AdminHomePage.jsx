@@ -7,6 +7,7 @@ import Map from "../../components/Map";
 import Button from "../../components/Button";
 import AdminNav from "../../components/AdminNav";
 import { getLocationName } from "../../util/location";
+import { getStatusColor } from "../../util/customStyles";
 
 const AdminHomePage = () => {
   const [wasteRequests, setWasteRequests] = useState([]);
@@ -22,6 +23,9 @@ const AdminHomePage = () => {
   // New modal states
   const [showRejectModal, setShowRejectModal] = useState(false);
   const [rejectionMessage, setRejectionMessage] = useState("");
+
+  // New filter and table visibility state
+  const [selectedFilter, setSelectedFilter] = useState("all");
 
   const navigate = useNavigate();
 
@@ -130,6 +134,16 @@ const AdminHomePage = () => {
     setFlexibleDate("");
   };
 
+  // Filtered waste requests
+  const filteredRequests = wasteRequests.filter((req) => {
+    if (selectedFilter === "all") return true;
+    if (selectedFilter === "pending") return req.status === "pending";
+    if (selectedFilter === "assigned") return req.status === "assigned";
+    if (selectedFilter === "picked-up") return req.status === "picked-up";
+    if (selectedFilter === "rejected") return req.status === "rejected";
+    return true;
+  });
+
   return (
     <div className="flex min-h-screen" style={gridBackgroundStyle}>
       <AdminNav />
@@ -155,11 +169,11 @@ const AdminHomePage = () => {
             </div>
           </div>
 
-          {/* Map + Request Details Side-by-Side */}
-          <div className="flex flex-col items-start lg:flex-row lg:space-x-6">
+          {/* Map + Request Details */}
+          <div className="flex flex-col items-start lg:flex-row lg:space-x-6 mb-6">
             <div className="w-full lg:w-2/3 bg-white rounded-lg shadow-md mb-6 lg:mb-0">
               <Map
-                wasteRequests={wasteRequests.filter((resquest) => resquest.status !== "rejected")}
+                wasteRequests={wasteRequests.filter((req) => req.status !== "rejected")}
                 onRequestSelect={handleWasteRequestSelect}
               />
             </div>
@@ -266,6 +280,82 @@ const AdminHomePage = () => {
               </div>
             )}
           </div>
+
+          {/* Buttons for filters */}
+          <div className="flex flex-wrap justify-center gap-4 mb-6">
+            {["all", "pending", "assigned", "picked-up", "rejected"].map((status) => (
+              <button
+                key={status}
+                onClick={() => {
+                  setSelectedFilter(status);
+                }}
+                className={`px-5 py-2 rounded-lg shadow-md transition-all duration-300 ${
+                  selectedFilter === status
+                    ? `bg-${getStatusColor(status)}-500 text-white`
+                    : "bg-white text-[#175E5E] border border-[#175E5E] hover:bg-[#175E5E] hover:text-white"
+                }`}
+              >
+                {status === "all"
+                  ? "All"
+                  : status === "picked-up"
+                  ? "Picked-up"
+                  : status.charAt(0).toUpperCase() + status.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          {/* Display Table */}
+
+          <div className="overflow-x-auto mb-8 bg-white rounded-lg shadow-md p-4">
+            <table className="min-w-full border-collapse rounded-lg overflow-hidden">
+              <thead>
+                <tr className="bg-[#175E5E] text-white">
+                  <th className="px-4 py-2 text-left rounded-tl-lg">Name</th>
+                  <th className="px-4 py-2 text-left">Location</th>
+                  <th className="px-4 py-2 text-left">Waste Types</th>
+
+                  {(selectedFilter === "all" || selectedFilter === "assigned" || selectedFilter === "picked-up") && (
+                    <>
+                      <th className="px-4 py-2 text-left">Schedule Date</th>
+                      <th className="px-4 py-2 text-left">Driver Name</th>
+                    </>
+                  )}
+                  {selectedFilter === "all" && <th className="px-4 py-2 text-left rounded-tr-lg">Collection Type</th>}
+                </tr>
+              </thead>
+              <tbody>
+                {filteredRequests.map((req, index) => (
+                  <tr
+                    key={req._id}
+                    className={`border-b hover:bg-gray-100 ${
+                      index === filteredRequests.length - 1 ? "rounded-b-lg" : ""
+                    }`}
+                  >
+                    <td className="px-4 py-2">{req.user?.name || "N/A"}</td>
+                    <td className="px-4 py-2">{req.location.address || "N/A"}</td>
+                    <td className="px-4 py-2">
+                      {req.wasteItems.map((item, i) => (
+                        <div key={i}>
+                          {item.type} — {item.quantity}kg
+                        </div>
+                      ))}
+                    </td>
+
+                    {(selectedFilter === "all" || selectedFilter === "assigned" || selectedFilter === "picked-up") && (
+                      <>
+                        <td className="px-4 py-2">
+                          {req.pickupDate ? new Date(req.pickupDate).toLocaleDateString() : "N/A"}
+                        </td>
+                        <td className="px-4 py-2">{req.assignedDriver?.name || "Unassigned"}</td>
+                      </>
+                    )}
+
+                    {selectedFilter === "all" && <td className="px-4 py-2">{req.pickupOption}</td>}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
         <Footer />
       </main>
@@ -274,12 +364,12 @@ const AdminHomePage = () => {
       {showRejectModal && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-60 z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-            <h2 className="text-xl font-semibold text-gray-800 mb-4">Reject Waste Request</h2>
+            <h2 className="text-xl font-semibold text-gray-800 mb-3">Reject Waste Request</h2>
             <textarea
               value={rejectionMessage}
               onChange={(e) => setRejectionMessage(e.target.value)}
               placeholder="Enter rejection message..."
-              className="w-full h-24 border rounded-md p-2 mb-4"
+              className="w-full h-24 border rounded-md p-2 mb-3"
             />
             <div className="flex justify-end gap-3">
               <button

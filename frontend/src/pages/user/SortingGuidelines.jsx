@@ -35,6 +35,11 @@ const guidelinesData = {
     "Clean all materials before placing them in the bin.",
     "Do not include contaminated or non-recyclable items.",
   ],
+  "Metal Waste": [
+    "Separate ferrous (magnetic) from non-ferrous (non-magnetic) metals using a magnet.",
+    "Separate metals by cleanliness.",
+    "Ensure all categories are stored in clearly labeled.",
+  ],
 };
 
 const SortingGuidelines = () => {

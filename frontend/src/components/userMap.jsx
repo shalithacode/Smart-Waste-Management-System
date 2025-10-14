@@ -1,10 +1,11 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import React, { useState, useCallback, useEffect } from "react";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import { getLocationName } from "../util/location";
 
 // Map container style
 const containerStyle = {
-  width: '100%',
-  height: '400px',
+  width: "100%",
+  height: "400px",
 };
 
 // Fallback map center (Sri Lanka's center)
@@ -26,16 +27,19 @@ const Map = ({ onLocationSelect, wasteRequests = [] }) => {
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        (position) => {
+        async (position) => {
           const { latitude, longitude } = position.coords;
           setCenter({ lat: latitude, lng: longitude });
           setMarkerPosition({ lat: latitude, lng: longitude });
+          const address = await getLocationName(latitude, longitude);
+          const location = { latitude, longitude, address };
+          console.log(location);
           if (onLocationSelect) {
-            onLocationSelect({ latitude, longitude }); // Only call if the function exists
+            onLocationSelect(location); // Only call if the function exists
           }
         },
         (error) => {
-          console.error('Error getting location: ', error);
+          console.error("Error getting location: ", error);
         }
       );
     }
@@ -43,12 +47,14 @@ const Map = ({ onLocationSelect, wasteRequests = [] }) => {
 
   // Handle map click to update marker position
   const onMapClick = useCallback(
-    (event) => {
+    async (event) => {
       const lat = event.latLng.lat();
       const lng = event.latLng.lng();
       setMarkerPosition({ lat, lng });
       if (onLocationSelect) {
-        onLocationSelect({ latitude: lat, longitude: lng }); // Only call if the function exists
+        const address = await getLocationName(lat, lng);
+        const location = { latitude: lat, longitude: lng, address };
+        onLocationSelect(location); // Only call if the function exists
       }
     },
     [onLocationSelect]

@@ -6,7 +6,6 @@ import Footer from "../../components/Footer";
 import Map from "../../components/Map";
 import Button from "../../components/Button";
 import AdminNav from "../../components/AdminNav";
-import { getLocationName } from "../../util/location";
 import { getStatusColor } from "../../util/customStyles";
 
 const AdminHomePage = () => {
@@ -14,7 +13,7 @@ const AdminHomePage = () => {
   const [selectedRequest, setSelectedRequest] = useState(null);
   const [drivers, setDrivers] = useState([]);
   const [selectedDriver, setSelectedDriver] = useState("");
-  const [streetName, setStreetName] = useState("");
+
   const [usersCount, setUsersCount] = useState(0);
   const [driversCount, setDriversCount] = useState(0);
   const [wasteRequestsCount, setWasteRequestsCount] = useState(0);
@@ -62,19 +61,6 @@ const AdminHomePage = () => {
     fetchWasteRequests();
     fetchDrivers();
     fetchUsersCount();
-  }, [selectedRequest]);
-
-  useEffect(() => {
-    const fetchLocation = async () => {
-      if (selectedRequest) {
-        const { latitude, longitude } = selectedRequest.location;
-        const name = await getLocationName(latitude, longitude);
-        setStreetName(name || "N/A");
-      } else {
-        setStreetName("");
-      }
-    };
-    fetchLocation();
   }, [selectedRequest]);
 
   const handleAssignDriver = async () => {
@@ -198,7 +184,7 @@ const AdminHomePage = () => {
                 </p>
                 <p className="mb-4 text-gray-700">
                   Location:
-                  <span className="font-bold"> {streetName}</span>
+                  <span className="font-bold"> {selectedRequest.location.address}</span>
                 </p>
                 <p className="mb-4 text-gray-700">Waste Types:</p>
                 <div className="flex flex-wrap gap-2 mb-4">

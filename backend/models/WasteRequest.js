@@ -53,7 +53,7 @@ const wasteItemSchema = new Schema({
     enum: [
       "Organic Waste",
       "Paper Waste",
-      "E-waste",
+      "E-Waste",
       "Hazardous Waste",
       "Plastic Waste",
       "Recycle Waste",

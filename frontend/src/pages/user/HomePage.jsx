@@ -8,7 +8,7 @@ const HomePage = () => {
 
   // Function to handle navigation when 'Get Started' is clicked
   const handleGetStartedClick = () => {
-    navigate("/selection"); // Navigate to '/selection' when clicked
+    navigate("/register"); // Navigate to '/selection' when clicked
   };
 
   // Inline style for light white grid background

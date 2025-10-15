@@ -310,35 +310,45 @@ const AdminHomePage = () => {
                 </tr>
               </thead>
               <tbody>
-                {filteredRequests.map((req, index) => (
-                  <tr
-                    key={req._id}
-                    className={`border-b hover:bg-gray-100 ${
-                      index === filteredRequests.length - 1 ? "rounded-b-lg" : ""
-                    }`}
-                  >
-                    <td className="px-4 py-2">{req.user?.name || "N/A"}</td>
-                    <td className="px-4 py-2">{req.location.address || "N/A"}</td>
-                    <td className="px-4 py-2">
-                      {req.wasteItems.map((item, i) => (
-                        <div key={i}>
-                          {item.type} — {item.quantity}kg
-                        </div>
-                      ))}
+                {filteredRequests.length > 0 ? (
+                  filteredRequests.map((req, index) => (
+                    <tr
+                      key={req._id}
+                      className={`border-b hover:bg-gray-100 ${
+                        index === filteredRequests.length - 1 ? "rounded-b-lg" : ""
+                      }`}
+                    >
+                      <td className="px-4 py-2">{req.user?.name || "N/A"}</td>
+                      <td className="px-4 py-2">{req.location?.address || "N/A"}</td>
+                      <td className="px-4 py-2">
+                        {req.wasteItems.map((item, i) => (
+                          <div key={i}>
+                            {item.type} — {item.quantity}kg
+                          </div>
+                        ))}
+                      </td>
+
+                      {(selectedFilter === "all" ||
+                        selectedFilter === "assigned" ||
+                        selectedFilter === "picked-up") && (
+                        <>
+                          <td className="px-4 py-2">
+                            {req.pickupDate ? new Date(req.pickupDate).toLocaleDateString() : "N/A"}
+                          </td>
+                          <td className="px-4 py-2">{req.assignedDriver?.name || "Unassigned"}</td>
+                        </>
+                      )}
+
+                      {selectedFilter === "all" && <td className="px-4 py-2">{req.pickupOption}</td>}
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="6" className="text-center py-6 text-gray-500">
+                      No collection requests found
                     </td>
-
-                    {(selectedFilter === "all" || selectedFilter === "assigned" || selectedFilter === "picked-up") && (
-                      <>
-                        <td className="px-4 py-2">
-                          {req.pickupDate ? new Date(req.pickupDate).toLocaleDateString() : "N/A"}
-                        </td>
-                        <td className="px-4 py-2">{req.assignedDriver?.name || "Unassigned"}</td>
-                      </>
-                    )}
-
-                    {selectedFilter === "all" && <td className="px-4 py-2">{req.pickupOption}</td>}
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
           </div>

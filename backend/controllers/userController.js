@@ -39,7 +39,7 @@ export const login = async (req, res) => {
 
     const token = jwt.sign({ userId: user._id, role: user.role }, jwtSecret, { expiresIn: "30d" });
 
-    res.json({
+    res.status(200).json({
       message: "Login successful",
       user: {
         _id: user._id,
@@ -58,7 +58,7 @@ export const getUserProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
     const user = await findUserById(userId);
-    res.json(user);
+    res.status(200).json(user);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

@@ -17,6 +17,15 @@ export const notifyUser = async (userId, message, type) => {
 
     // Optionally, you can also push the notification to the user's notifications array if needed
     const user = await User.findById(userId);
+    if (!user) {
+      console.warn(`⚠️ User not found for notification: ${userId}`);
+      return; // Don’t throw; just skip gracefully
+    }
+
+    // Ensure notifications array exists
+    if (!Array.isArray(user.notifications)) {
+      user.notifications = [];
+    }
     user.notifications.push(notification._id); // push the ObjectId
     await user.save();
   } catch (error) {

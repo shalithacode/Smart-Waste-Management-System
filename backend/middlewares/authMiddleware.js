@@ -9,19 +9,16 @@ export const verifyToken = (req, res, next) => {
 
   jwt.verify(token, jwtSecret, (err, decoded) => {
     if (err) {
-      console.log(err);
-      return res.status(500).json({ message: "Failed to authenticate token." });
+      return res.status(401).json({ message: "Unauthorized: Invalid token." });
     }
-
     req.user = decoded;
     next();
   });
 };
 
 export const isAdmin = (req, res, next) => {
-  if (req.user.role !== "admin") {
-    return res.status(403).json({ message: "Admin access required." });
-  }
+  if (!req.user) return res.status(401).json({ message: "Unauthorized." });
+  if (req.user.role !== "admin") return res.status(403).json({ message: "Admin access required." });
   next();
 };
 

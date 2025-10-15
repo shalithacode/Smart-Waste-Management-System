@@ -26,7 +26,6 @@ export const createWasteRequest = async (req, res) => {
     }
 
     const wasteCode = generateWasteCode(); // Generate a unique waste code
-
     // Create waste request without QR code first
     let wasteRequest = await createWasteRequestService({
       wasteItems: waste,

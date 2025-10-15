@@ -3,9 +3,14 @@ import { notifyUser } from "./notificationService.js";
 import User from "../models/User.js";
 
 export const createWasteRequest = async (requestData) => {
-  const wasteRequest = new WasteRequest(requestData);
-  await wasteRequest.save();
-  return wasteRequest;
+  try {
+    const wasteRequest = new WasteRequest(requestData);
+    const createdWsteRequest = await wasteRequest.save();
+    return createdWsteRequest;
+  } catch (error) {
+    console.error(error);
+    res.status(400).json({ message: error.message });
+  }
 };
 
 export const assignDriverToWasteRequest = async (requestId, driverId, pickupDate) => {

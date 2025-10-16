@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import UserNav from "../../components/UserNav";
 import Footer from "../../components/Footer";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
-const wasteTypes = [
+const wasteTypesData = [
   { type: "Plastic Waste", icon: "♻️" },
   { type: "Metal Waste", icon: "🛠️" },
   { type: "Organic Waste", icon: "🍂" },
@@ -20,20 +20,41 @@ const pickupOptions = [
 ];
 
 const BulkWaste = () => {
+  const [wasteTypes, setWasteTypes] = useState([]);
   const [selectedWasteTypes, setSelectedWasteTypes] = useState([]);
   const [wasteQuantity, setWasteQuantity] = useState([]);
   const [selectedPickupOption, setSelectedPickupOption] = useState("");
   const [pickupDate, setPickupDate] = useState("");
   const navigate = useNavigate();
 
+  // ✅ Initialize waste types with random "currentLevel"
+  useEffect(() => {
+    const initializedWasteTypes = wasteTypesData.map((waste) => ({
+      ...waste,
+      currentLevel: Math.floor(Math.random() * 101), // random 0–100
+    }));
+    setWasteTypes(initializedWasteTypes);
+  }, []);
+
+  // ✅ Handle selection of a waste type
   const handleWasteTypeSelection = (wasteType) => {
-    setSelectedWasteTypes((prevSelected) =>
-      prevSelected.includes(wasteType)
-        ? prevSelected.filter((type) => type !== wasteType)
-        : [...prevSelected, wasteType]
-    );
+    setSelectedWasteTypes((prevSelected) => {
+      if (prevSelected.includes(wasteType)) {
+        // Remove selection
+        setWasteQuantity((prevQty) => prevQty.filter((item) => item.type !== wasteType));
+        return prevSelected.filter((type) => type !== wasteType);
+      } else {
+        // Add selection
+        const wasteInfo = wasteTypes.find((w) => w.type === wasteType);
+        if (wasteInfo) {
+          setWasteQuantity((prevQty) => [...prevQty, { type: wasteType, quantity: wasteInfo.currentLevel }]);
+        }
+        return [...prevSelected, wasteType];
+      }
+    });
   };
 
+  // ✅ Handle slider change
   function handleWasteQty(type, quantity) {
     setWasteQuantity((prevQty) => {
       const existingIndex = prevQty.findIndex((item) => item.type === type);
@@ -47,15 +68,15 @@ const BulkWaste = () => {
     });
   }
 
+  // ✅ Handle submit
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (wasteQuantity.length === 0 || wasteQuantity <= 0 || !selectedPickupOption) {
+    if (wasteQuantity.length === 0 || !selectedPickupOption) {
       alert("Please complete all steps!");
       return;
     }
 
-    // ✅ Validate date for scheduled pickup
     if (selectedPickupOption === "Scheduled Pickup" && !pickupDate) {
       alert("Please select a pickup date for Scheduled Pickup!");
       return;
@@ -96,37 +117,59 @@ const BulkWaste = () => {
               >
                 <div className="text-5xl mb-2">{waste.icon}</div>
                 <p className="font-semibold">{waste.type}</p>
+                <p
+                  className={`mt-2 text-sm font-medium ${
+                    selectedWasteTypes.includes(waste.type)
+                      ? "text-white"
+                      : waste.currentLevel > 75
+                      ? "text-red-600"
+                      : "text-teal-700"
+                  }`}
+                >
+                  Current Level: {waste.currentLevel}%
+                </p>
               </div>
             ))}
           </div>
         </div>
 
         {/* Step 2 */}
-        <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8 border border-gray-300">
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 2: Enter Waste Quantity</h2>
+        {selectedWasteTypes.length > 0 && (
+          <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8 border border-gray-300">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 2: Enter Waste Quantity</h2>
 
-          {selectedWasteTypes.map((selectedType) => {
-            const current = wasteQuantity.find((item) => item.type === selectedType);
-            const qtyValue = current ? current.quantity : 0;
+            {selectedWasteTypes.map((selectedType) => {
+              const current = wasteQuantity.find((item) => item.type === selectedType);
+              const wasteInfo = wasteTypes.find((w) => w.type === selectedType);
+              const qtyValue = current ? current.quantity : wasteInfo?.currentLevel || 0;
 
-            return (
-              <div key={selectedType} className="mb-6 border-b border-gray-200 pb-4 last:border-b-0">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-lg font-semibold text-teal-700">{selectedType}</h3>
-                  <span className="text-sm font-bold">{qtyValue} kg</span>
+              return (
+                <div key={selectedType} className="mb-6 border-b border-gray-200 pb-4 last:border-b-0">
+                  <div className="flex justify-between items-center mb-2">
+                    <h3 className="text-lg font-semibold text-teal-700">{selectedType}</h3>
+                    <span className="text-sm font-bold">{qtyValue} kg</span>
+                  </div>
+
+                  {wasteInfo && (
+                    <p className="text-sm text-gray-500 mb-2">
+                      Current Waste Level:{" "}
+                      <span className="font-semibold text-teal-700">{wasteInfo.currentLevel}%</span>
+                    </p>
+                  )}
+
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    value={qtyValue}
+                    onChange={(e) => handleWasteQty(selectedType, e.target.value)}
+                    className="w-full h-2 bg-teal-500 rounded-lg accent-teal-600"
+                  />
                 </div>
-                <input
-                  type="range"
-                  min="0"
-                  max="100"
-                  value={qtyValue}
-                  onChange={(e) => handleWasteQty(selectedType, e.target.value)}
-                  className="w-full h-2 bg-teal-500 rounded-lg accent-teal-600"
-                />
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
 
         {/* Step 3 */}
         <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8 border border-gray-300">
@@ -147,7 +190,7 @@ const BulkWaste = () => {
           </div>
         </div>
 
-        {/* ✅ Step 4: Only if Scheduled Pickup is selected */}
+        {/* Step 4 (Scheduled Pickup only) */}
         {selectedPickupOption === "Scheduled Pickup" && (
           <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8 border border-gray-300">
             <h2 className="text-2xl font-bold text-gray-800 mb-4">Step 4: Select Pickup Date</h2>
@@ -156,7 +199,7 @@ const BulkWaste = () => {
               value={pickupDate}
               onChange={(e) => setPickupDate(e.target.value)}
               className="w-full border border-gray-300 rounded-lg p-3 text-gray-700 focus:outline-none focus:ring-2 focus:ring-teal-600"
-              min={new Date().toISOString().split("T")[0]} // prevent past dates
+              min={new Date().toISOString().split("T")[0]}
             />
           </div>
         )}

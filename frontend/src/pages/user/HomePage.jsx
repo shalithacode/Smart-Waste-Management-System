@@ -28,7 +28,7 @@ const HomePage = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <main className="flex flex-col items-center justify-center flex-grow bg-[#175E5E] text-white px-4 py-8">
+      <main className="flex flex-col items-center justify-center flex-grow bg-[#175E5E] text-white px-4 py-8 lg:ml-64 md:ml-64">
         <div className="text-center p-6 max-w-4xl">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
             Welcome to <span className="text-yellow-400">ClearWaste</span>

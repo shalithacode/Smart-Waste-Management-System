@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import UserNav from "../../../components/UserNav"; // Adjust the path as needed
 import Footer from "../../../components/Footer"; // Adjust the path as needed
-import Sidebar from "./Sidebar"; // Import Sidebar component
 
 const Membership = () => {
   const [billingCycle, setBillingCycle] = useState("monthly"); // State to track billing cycle
@@ -26,7 +25,6 @@ const Membership = () => {
         {/* Main content */}
         <main className="flex-1 p-4 sm:ml-64">
           {" "}
-          {/* Margin adjusted to align with sidebar */}
           <h1 className="text-3xl font-extrabold text-gray-900 text-center mb-4">Upgrade Your Subscription</h1>
           <p className="text-gray-600 text-center mb-6">
             Choose a subscription plan that suits your waste management needs and enjoy exclusive services.

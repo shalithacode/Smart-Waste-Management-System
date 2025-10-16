@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserNav from "../../../components/UserNav"; // Adjust the path as needed
 import Footer from "../../../components/Footer"; // Adjust the path as needed
-import Sidebar from "./Sidebar"; // Import Sidebar component
+
 import { Pie } from "react-chartjs-2"; // Import Pie chart from react-chartjs-2
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"; // Import necessary elements from Chart.js
 
@@ -75,10 +75,8 @@ const Recycling = () => {
       <UserNav />
 
       <div className="flex flex-1 flex-col lg:flex-row ">
-        {/* Sidebar is hidden on smaller screens */}
-
         {/* Main content */}
-        <main className="flex-1 p-4 lg:ml-56 sm:py-12">
+        <main className="flex-1 p-4 lg:ml-56 sm:py-12 md:ml-64">
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 text-center mb-4">Recycling Overview</h1>
           <p className="text-gray-600 text-center mb-6">
             Here is your waste and recycling data along with your revenue from recycling activities.

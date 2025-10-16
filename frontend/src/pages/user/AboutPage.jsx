@@ -32,7 +32,7 @@ const AboutPage = () => {
           {/* Features Section */}
           <div className="bg-white py-8 sm:py-12 px-6 w-full sm:w-3/4 lg:w-1/2 shadow-xl rounded-lg mt-12 sm:mt-16 text-gray-800">
             <h2 className="text-xl sm:text-2xl lg:text-4xl font-bold text-center text-[#175E5E] mb-6 sm:mb-8">
-              Why Choose ClearWaste?
+              Why Choose WiseWaste?
             </h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-8">
               <div className="flex items-start">

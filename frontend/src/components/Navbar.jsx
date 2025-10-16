@@ -25,7 +25,8 @@ const Navbar = () => {
           {/* Logo */}
           <div className="flex-shrink-0">
             <Link to="/" className="text-2xl font-bold text-white">
-              ClearWaste
+              <span className="text-yellow-400 font-serif">W</span>ise
+              <span className="text-yellow-400 font-serif">W</span>aste
             </Link>
           </div>
 
@@ -48,7 +49,7 @@ const Navbar = () => {
                 to={auth?.user.role === "admin" ? "/AdminHomePage" : "/UserHomePage"}
                 className="px-3 py-2 rounded-md text-sm font-medium hover:text-yellow-400 hover:underline hover:underline-offset-4 transition-all duration-200"
               >
-                DashBoard
+                Dashboard
               </Link>
             )}
             <Link

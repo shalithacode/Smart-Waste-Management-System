@@ -28,10 +28,15 @@ const HomePage = () => {
       <Navbar />
 
       {/* Hero Section */}
-      <main className="flex flex-col items-center justify-center flex-grow bg-[#175E5E] text-white px-4 py-8 lg:ml-64 md:ml-64">
+      <main className="flex flex-col items-center justify-center flex-grow bg-[#175E5E] text-white px-4 py-8">
         <div className="text-center p-6 max-w-4xl">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
-            Welcome to <span className="text-yellow-400">ClearWaste</span>
+            Welcome to{" "}
+            <span className="text-yellow-400">
+              {" "}
+              <span className="text-yellow-400 font-serif">W</span>ise
+              <span className="text-yellow-400 font-serif">W</span>aste
+            </span>
           </h1>
           <p className="text-md sm:text-lg lg:text-2xl mt-4 leading-relaxed">
             The future of smart waste management, designed to make your life easier and the environment cleaner.

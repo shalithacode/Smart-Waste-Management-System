@@ -54,8 +54,7 @@ const Footer = ({ isHome }) => {
 
         {/* Bottom Text */}
         <div className="mt-4 text-center text-sm text-gray-300">
-          © {new Date().getFullYear()} <span className="font-semibold text-white">ClearWaste</span>. All rights
-          reserved.
+          © {new Date().getFullYear()} <span className="font-semibold text-white">WiseWaste</span>. All rights reserved.
         </div>
       </div>
     </footer>

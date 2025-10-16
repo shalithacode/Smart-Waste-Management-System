@@ -26,7 +26,8 @@ const AdminNav = () => {
         {/* Logo */}
         <div className="flex items-center justify-between px-4 py-4 border-b border-gray-700">
           <Link to="/" className="text-2xl font-bold text-white">
-            ClearWaste
+            <span className="text-yellow-400 font-serif">W</span>ise
+            <span className="text-yellow-400 font-serif">W</span>aste
           </Link>
           {/* Close button (mobile only) */}
           <button onClick={toggleMenu} className="md:hidden text-white hover:text-yellow-400">
@@ -93,7 +94,8 @@ const AdminNav = () => {
       {/* Top bar for small screens (toggle button only) */}
       <div className="md:hidden bg-[#0c343d] text-white flex items-center justify-between px-4 py-3 sticky top-0 z-40">
         <Link to="/" className="text-xl font-bold">
-          ClearWaste
+          <span className="text-yellow-400 font-serif">W</span>ise
+          <span className="text-yellow-400 font-serif">W</span>aste
         </Link>
         <button onClick={toggleMenu}>
           <FaBars size={22} />

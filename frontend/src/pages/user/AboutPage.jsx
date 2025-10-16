@@ -70,40 +70,45 @@ const AboutPage = () => {
         <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-center text-[#175E5E] mb-10 sm:mb-16">
           How It Works
         </h2>
+
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 text-center">
           <div className="space-y-4">
             <h3 className="text-3xl sm:text-4xl font-bold text-green-500">01.</h3>
-            <h4 className="text-xl sm:text-2xl font-semibold">Select Waste Type</h4>
+            <h4 className="text-xl sm:text-2xl font-semibold">Choose Waste Type</h4>
             <p className="text-gray-500 leading-relaxed text-sm sm:text-base">
-              Choose the type of waste you are disposing of from our easy-to-use options.
+              Select from categories like plastic, metal, organic, and more — making disposal easy and accurate.
             </p>
           </div>
+
           <div className="space-y-4">
             <h3 className="text-3xl sm:text-4xl font-bold text-green-500">02.</h3>
-            <h4 className="text-xl sm:text-2xl font-semibold">Schedule Pickup</h4>
+            <h4 className="text-xl sm:text-2xl font-semibold">Request a Pickup</h4>
             <p className="text-gray-500 leading-relaxed text-sm sm:text-base">
-              Schedule a pickup at your convenience with real-time tracking options available.
+              Set your pickup preference — immediate, scheduled, or flexible — to suit your convenience.
             </p>
           </div>
+
           <div className="space-y-4">
             <h3 className="text-3xl sm:text-4xl font-bold text-green-500">03.</h3>
-            <h4 className="text-xl sm:text-2xl font-semibold">Track Your Waste</h4>
+            <h4 className="text-xl sm:text-2xl font-semibold">Monitor the Process</h4>
             <p className="text-gray-500 leading-relaxed text-sm sm:text-base">
-              Get real-time updates as your waste is collected and processed for recycling.
+              Track your waste collection and recycling status in real time through your dashboard.
             </p>
           </div>
+
           <div className="space-y-4">
             <h3 className="text-3xl sm:text-4xl font-bold text-green-500">04.</h3>
-            <h4 className="text-xl sm:text-2xl font-semibold">Earn Rewards</h4>
+            <h4 className="text-xl sm:text-2xl font-semibold">Earn Eco Points</h4>
             <p className="text-gray-500 leading-relaxed text-sm sm:text-base">
-              Earn rewards for every pickup as part of our eco-friendly incentive program.
+              Get rewarded for every successful pickup and redeem your points for discounts or green perks.
             </p>
           </div>
+
           <div className="space-y-4">
             <h3 className="text-3xl sm:text-4xl font-bold text-green-500">05.</h3>
-            <h4 className="text-xl sm:text-2xl font-semibold">Make a Difference</h4>
+            <h4 className="text-xl sm:text-2xl font-semibold">Create Impact</h4>
             <p className="text-gray-500 leading-relaxed text-sm sm:text-base">
-              Join the movement for a cleaner planet by participating in our smart waste management system.
+              Be part of a smarter, cleaner future — your effort helps reduce waste and promote sustainability.
             </p>
           </div>
         </div>

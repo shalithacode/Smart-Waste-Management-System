@@ -1,37 +1,31 @@
-import React, { useState } from 'react';
-import cleanWasteAPI from '../../api/cleanWasteAPI';
-import AdminNav from '../../components/AdminNav';  // Import the Navbar
-import Footer from '../../components/Footer';  // Import the Footer
+import React, { useState } from "react";
+import cleanWasteAPI from "../../api/cleanWasteAPI";
+import AdminNav from "../../components/AdminNav"; // Import the Navbar
+import Footer from "../../components/Footer"; // Import the Footer
 
-const AddPlaceForm = () => {  
-  const [streetName, setStreetName] = useState('');
+const AddPlaceForm = () => {
+  const [streetName, setStreetName] = useState("");
   const [binCount, setBinCount] = useState(1);
-  const [successMessage, setSuccessMessage] = useState(''); // New state for success message
+  const [successMessage, setSuccessMessage] = useState(""); // New state for success message
 
-  const streetNames = [
-    'Vihara Road',
-    'Waliwita Road',
-    'E.A. Jayasinghe Road',
-    'Gamunu Pura',
-    'Samanala Pedesa',
-  ];
+  const streetNames = ["Vihara Road", "Waliwita Road", "E.A. Jayasinghe Road", "Gamunu Pura", "Samanala Pedesa"];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const newPlace = { streetName, binCount };
 
     try {
-      await cleanWasteAPI.post('/addPlace', newPlace);
-      setStreetName('');  // Reset the form after adding
-      setBinCount(1);     // Reset the form after adding
-      setSuccessMessage('Place added successfully!');  // Show success message
+      await cleanWasteAPI.post("/addPlace", newPlace);
+      setStreetName(""); // Reset the form after adding
+      setBinCount(1); // Reset the form after adding
+      setSuccessMessage("Place added successfully!"); // Show success message
     } catch (error) {
-      console.error('Error adding place:', error);
-      setSuccessMessage('Error adding place. Please try again.'); // Show error message
+      console.error("Error adding place:", error);
+      setSuccessMessage("Error adding place. Please try again."); // Show error message
     }
 
     // Clear the success message after 3 seconds
-    setTimeout(() => setSuccessMessage(''), 3000);
+    setTimeout(() => setSuccessMessage(""), 3000);
   };
 
   // Inline style for light grey grid background
@@ -40,26 +34,21 @@ const AddPlaceForm = () => {
       linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
       linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)
     `,
-    backgroundSize: '10px 10px', // Smaller grid size
-    width: '100%',
-    minHeight: '100vh', // Full-screen grid background
+    backgroundSize: "10px 10px", // Smaller grid size
+    width: "100%",
+    minHeight: "100vh", // Full-screen grid background
   };
 
   return (
     <div className="flex flex-col min-h-screen" style={gridBackgroundStyle}>
       <AdminNav /> {/* Navbar included here */}
-
-      <main className="flex-grow flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8">
+      <main className="flex-grow flex flex-col items-center justify-center px-4 sm:px-6 lg:px-8 md:ml-64">
         <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 max-w-lg w-full">
           <h1 className="text-3xl sm:text-4xl font-bold text-center text-[#175E5E] mb-6">Add New Place</h1>
-          
+
           {/* Success message */}
-          {successMessage && (
-            <div className="text-center text-green-600 mb-4">
-              {successMessage}
-            </div>
-          )}
-          
+          {successMessage && <div className="text-center text-green-600 mb-4">{successMessage}</div>}
+
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Street Name Dropdown */}
             <div>
@@ -108,7 +97,6 @@ const AddPlaceForm = () => {
           </form>
         </div>
       </main>
-
       <Footer /> {/* Footer included here */}
     </div>
   );

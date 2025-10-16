@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import cleanWasteAPI from "../../api/cleanWasteAPI";
 import { gridBackgroundStyle } from "../../util/customStyles";
 import Footer from "../../components/Footer";
@@ -25,8 +24,6 @@ const AdminHomePage = () => {
 
   // New filter and table visibility state
   const [selectedFilter, setSelectedFilter] = useState("all");
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchWasteRequests = async () => {

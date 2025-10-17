@@ -101,25 +101,26 @@ const AdminHomePage = () => {
             pickedUpCount={wasteRequests.filter((r) => r.status === "picked-up").length}
             rejectCount={wasteRequests.filter((r) => r.status === "rejected").length}
           />
-
-          <DashboardMapSection
-            wasteRequests={wasteRequests}
-            onSelect={setSelectedRequest}
-            selectedRequest={selectedRequest}
-          />
-
-          {selectedRequest && (
-            <WasteRequestDetails
+          <div className="flex flex-col items-start lg:flex-row lg:space-x-6 mb-6">
+            <DashboardMapSection
+              wasteRequests={wasteRequests}
+              onSelect={setSelectedRequest}
               selectedRequest={selectedRequest}
-              drivers={drivers}
-              selectedDriver={selectedDriver}
-              setSelectedDriver={setSelectedDriver}
-              flexibleDate={flexibleDate}
-              setFlexibleDate={setFlexibleDate}
-              handleAssignDriver={handleAssignDriver}
-              onReject={() => setShowRejectModal(true)}
             />
-          )}
+
+            {selectedRequest && (
+              <WasteRequestDetails
+                selectedRequest={selectedRequest}
+                drivers={drivers}
+                selectedDriver={selectedDriver}
+                setSelectedDriver={setSelectedDriver}
+                flexibleDate={flexibleDate}
+                setFlexibleDate={setFlexibleDate}
+                handleAssignDriver={handleAssignDriver}
+                onReject={() => setShowRejectModal(true)}
+              />
+            )}
+          </div>
 
           <FilterButtons selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} />
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import UserNav from "../../../components/UserNav";
 import Footer from "../../../components/Footer";
 
-import cleanWasteAPI from "../../../api/cleanWasteAPI";
+import cleanWasteAPI from "../../../api/wiseWasteAPI";
 
 const UserNotification = () => {
   const [notifications, setNotifications] = useState([]);

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import cleanWasteAPI from "../../api/cleanWasteAPI";
+import wasteAPI from "../../api/wiseWasteAPI";
 import UserNav from "../../components/UserNav";
 import Footer from "../../components/Footer";
 import { gridBackgroundStyle } from "../../util/customStyles";
@@ -26,7 +26,7 @@ const CreateWasteRequest = () => {
     }
 
     try {
-      const response = await cleanWasteAPI.post("/waste-requests/create", {
+      const response = await wasteAPI.post("/waste-requests/create", {
         waste: wasteQuantity,
         pickupOption: selectedPickupOption,
         location: pickupLocation,

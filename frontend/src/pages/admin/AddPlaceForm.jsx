@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import cleanWasteAPI from "../../api/cleanWasteAPI";
+import wasteAPI from "../../api/wiseWasteAPI";
 import AdminNav from "../../components/AdminNav"; // Import the Navbar
 import Footer from "../../components/Footer"; // Import the Footer
 
@@ -15,7 +15,7 @@ const AddPlaceForm = () => {
     const newPlace = { streetName, binCount };
 
     try {
-      await cleanWasteAPI.post("/addPlace", newPlace);
+      await wasteAPI.post("/addPlace", newPlace);
       setStreetName(""); // Reset the form after adding
       setBinCount(1); // Reset the form after adding
       setSuccessMessage("Place added successfully!"); // Show success message

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import cleanWasteAPI from "../../api/cleanWasteAPI";
+import wasteAPI from "../../api/wiseWasteAPI";
 import { gridBackgroundStyle } from "../../util/customStyles";
 import Footer from "../../components/Footer";
 import Map from "../../components/Map";
@@ -29,7 +29,7 @@ const AdminHomePage = () => {
   useEffect(() => {
     const fetchWasteRequests = async () => {
       try {
-        const response = await cleanWasteAPI.get("/waste-requests/all-waste-requests");
+        const response = await wasteAPI.get("/waste-requests/all-waste-requests");
         setWasteRequests(response.data);
         setWasteRequestsCount(response.data.length);
       } catch (error) {
@@ -39,7 +39,7 @@ const AdminHomePage = () => {
 
     const fetchDrivers = async () => {
       try {
-        const response = await cleanWasteAPI.get("/users/drivers");
+        const response = await wasteAPI.get("/users/drivers");
         setDrivers(response.data);
         setDriversCount(response.data.length);
       } catch (error) {
@@ -49,7 +49,7 @@ const AdminHomePage = () => {
 
     const fetchUsersCount = async () => {
       try {
-        const response = await cleanWasteAPI.get("/users/count");
+        const response = await wasteAPI.get("/users/count");
         setUsersCount(response.data.count);
       } catch (error) {
         console.error("Error fetching users count:", error);
@@ -73,7 +73,7 @@ const AdminHomePage = () => {
     }
 
     try {
-      await cleanWasteAPI.post("/waste-requests/assign-driver", {
+      await wasteAPI.post("/waste-requests/assign-driver", {
         requestId: selectedRequest._id,
         driverId: selectedDriver,
         pickupDate:
@@ -98,7 +98,7 @@ const AdminHomePage = () => {
     }
 
     try {
-      await cleanWasteAPI.post("/waste-requests/reject-request", {
+      await wasteAPI.post("/waste-requests/reject-request", {
         requestId: selectedRequest._id,
         message: rejectionMessage,
       });

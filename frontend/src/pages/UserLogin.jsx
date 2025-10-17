@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import cleanWasteAPI from "../api/cleanWasteAPI";
+import wasteAPI from "../api/wiseWasteAPI";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -9,7 +9,7 @@ import Button from "../components/Button";
 const UserLogin = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
-  const { login } = useAuth();  // Context to store the user and token
+  const { login } = useAuth(); // Context to store the user and token
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -25,7 +25,7 @@ const UserLogin = () => {
 
     try {
       // Make API call to login
-      const response = await cleanWasteAPI.post("/users/login", formData);
+      const response = await wasteAPI.post("/users/login", formData);
 
       // Log response data to ensure it contains user and token
       console.log("Login Response:", response.data);
@@ -40,11 +40,11 @@ const UserLogin = () => {
 
         // Navigate based on user role
         if (user.role === "admin") {
-          navigate("/AdminHomePage");  // Navigate to admin dashboard
+          navigate("/AdminHomePage"); // Navigate to admin dashboard
         } else if (user.role === "driver") {
-          navigate("/driverHomePage");  // Navigate to driver dashboard
+          navigate("/driverHomePage"); // Navigate to driver dashboard
         } else {
-          navigate("/");  // Navigate to home page for regular users
+          navigate("/"); // Navigate to home page for regular users
         }
       } else {
         alert("Invalid login response. Please try again.");
@@ -65,9 +65,7 @@ const UserLogin = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#175E5E]">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md mx-4">
-        <h1 className="text-3xl font-bold text-center text-[#175E5E] mb-6">
-          Clean Waste Login
-        </h1>
+        <h1 className="text-3xl font-bold text-center text-[#175E5E] mb-6">Clean Waste Login</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           <InputField
             label="Email"
@@ -93,7 +91,6 @@ const UserLogin = () => {
               onClick={togglePasswordVisibility}
               className="absolute right-3 top-10 text-gray-500"
               data-testid="toggle-password"
-
             >
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>

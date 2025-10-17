@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
-import cleanWasteAPI from '../api/cleanWasteAPI';
-import { useNavigate, Link } from 'react-router-dom';
-import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import InputField from '../components/InputField';
-import Button from '../components/Button';
+import React, { useState } from "react";
+import wasteAPI from "../api/wiseWasteAPI";
+import { useNavigate, Link } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import InputField from "../components/InputField";
+import Button from "../components/Button";
 
 const UserRegister = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
+    name: "",
+    email: "",
+    password: "",
     address: {
-      street: '',
-      city: '',
-      postalCode: '',
+      street: "",
+      city: "",
+      postalCode: "",
     },
-    role: 'user', // Default role is user
+    role: "user", // Default role is user
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -24,8 +24,8 @@ const UserRegister = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name.startsWith('address')) {
-      const [_, key] = name.split('.');  // Get the key (street, city, postalCode)
+    if (name.startsWith("address")) {
+      const [_, key] = name.split("."); // Get the key (street, city, postalCode)
       setFormData({
         ...formData,
         address: {
@@ -47,17 +47,17 @@ const UserRegister = () => {
     // Basic validation
     const { name, email, password, address } = formData;
     if (!name || !email || !password || !address.street || !address.city || !address.postalCode) {
-      alert('Please fill out all fields.');
+      alert("Please fill out all fields.");
       return;
     }
 
     try {
-      const response = await cleanWasteAPI.post('/users/register', formData);
-      console.log('User registered:', response.data);
-      navigate('/login');  // Redirect to login page after successful registration
+      const response = await wasteAPI.post("/users/register", formData);
+      console.log("User registered:", response.data);
+      navigate("/login"); // Redirect to login page after successful registration
     } catch (error) {
-      console.error('Error registering user', error);
-      alert('Registration failed. Please try again.');
+      console.error("Error registering user", error);
+      alert("Registration failed. Please try again.");
     }
   };
 
@@ -66,13 +66,7 @@ const UserRegister = () => {
   };
 
   // Hardcoded list of street names
-  const streetOptions = [
-    'Vihara Road',
-    'Waliwita Road',
-    'E.A. Jayasinghe Road',
-    'Gamunu Pura',
-    'Samanala Pedesa'
-  ];
+  const streetOptions = ["Vihara Road", "Waliwita Road", "E.A. Jayasinghe Road", "Gamunu Pura", "Samanala Pedesa"];
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#175E5E]">
@@ -106,11 +100,7 @@ const UserRegister = () => {
               name="password"
               className="w-full border border-gray-300 p-2 rounded-md"
             />
-            <button
-              type="button"
-              onClick={togglePasswordVisibility}
-              className="absolute right-3 top-10 text-gray-500"
-            >
+            <button type="button" onClick={togglePasswordVisibility} className="absolute right-3 top-10 text-gray-500">
               {showPassword ? <FaEyeSlash /> : <FaEye />}
             </button>
           </div>
@@ -177,7 +167,12 @@ const UserRegister = () => {
           />
         </form>
         <div className="text-center mt-4 text-gray-500">
-          <p>Already have an account? <Link to="/login" className="text-[#175E5E] hover:underline">Login</Link></p>
+          <p>
+            Already have an account?{" "}
+            <Link to="/login" className="text-[#175E5E] hover:underline">
+              Login
+            </Link>
+          </p>
         </div>
       </div>
     </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
-import cleanWasteAPI from "../api/cleanWasteAPI"; // make sure path is correct
+import wasteAPI from "../api/wiseWasteAPI"; // make sure path is correct
 
 const UserNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,7 +22,7 @@ const UserNav = () => {
   useEffect(() => {
     const fetchUnreadCount = async () => {
       try {
-        const response = await cleanWasteAPI.get("/notifications/");
+        const response = await wasteAPI.get("/notifications/");
         const notifications = response.data.notifications || [];
         const unread = notifications.filter((n) => n.status === "unread").length;
         setUnreadCount(unread);

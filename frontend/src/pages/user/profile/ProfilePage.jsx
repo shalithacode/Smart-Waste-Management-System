@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import UserNav from "../../../components/UserNav"; // Adjust the path as needed
 import Footer from "../../../components/Footer"; // Adjust the path as needed
 import { getStatusColor } from "../../../util/customStyles";
-import cleanWasteAPI from "../../../api/cleanWasteAPI"; // Import your Axios instance
+import cleanWasteAPI from "../../../api/wiseWasteAPI"; // Import your Axios instance
 import { useAuth } from "../../../context/AuthContext"; // Import auth context to get the logged-in user
 import { getLocationName } from "../../../util/location";
 

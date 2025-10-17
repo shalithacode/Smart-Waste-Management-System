@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import cleanWasteAPI from "../../api/cleanWasteAPI"; // Ensure your API setup is correct
+import wasteAPI from "../../api/wiseWasteAPI"; // Ensure your API setup is correct
 import AdminNav from "../../components/AdminNav";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -18,7 +18,7 @@ const DriverAssignPage = () => {
   useEffect(() => {
     const fetchDrivers = async () => {
       try {
-        const response = await cleanWasteAPI.get("/users/drivers"); // Fetch users and drivers
+        const response = await wasteAPI.get("/users/drivers"); // Fetch users and drivers
         const driverList = response.data.filter((user) => user.role === "driver"); // Filter only drivers
         setDrivers(driverList);
       } catch (error) {
@@ -39,7 +39,7 @@ const DriverAssignPage = () => {
 
     try {
       // API call to assign the driver
-      const response = await cleanWasteAPI.post("/drivers/assign-pickup", {
+      const response = await wasteAPI.post("/drivers/assign-pickup", {
         driverId: selectedDriver,
         street: selectedStreet,
         pickupDate: pickupDate,

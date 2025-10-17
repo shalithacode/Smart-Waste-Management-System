@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const cleanWasteAPI = axios.create({
+const wiseWasteAPI = axios.create({
   baseURL: "http://localhost:5000/api",
   headers: {
     "Content-Type": "application/json",
@@ -8,7 +8,7 @@ const cleanWasteAPI = axios.create({
 });
 
 // Add Authorization token
-cleanWasteAPI.interceptors.request.use(
+wiseWasteAPI.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -20,7 +20,7 @@ cleanWasteAPI.interceptors.request.use(
 );
 
 // Handle expired/unauthorized tokens
-cleanWasteAPI.interceptors.response.use(
+wiseWasteAPI.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response && error.response.status === 401) {
@@ -31,4 +31,4 @@ cleanWasteAPI.interceptors.response.use(
   }
 );
 
-export default cleanWasteAPI;
+export default wiseWasteAPI;

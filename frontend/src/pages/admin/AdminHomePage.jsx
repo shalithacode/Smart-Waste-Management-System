@@ -6,6 +6,7 @@ import Map from "../../components/Map";
 import Button from "../../components/Button";
 import AdminNav from "../../components/AdminNav";
 import { getStatusColor } from "../../util/customStyles";
+import { FaUsers, FaTruck, FaRecycle, FaClock, FaCheckCircle, FaTrashAlt } from "react-icons/fa";
 
 const AdminHomePage = () => {
   const [wasteRequests, setWasteRequests] = useState([]);
@@ -135,20 +136,67 @@ const AdminHomePage = () => {
           <h1 className="text-3xl sm:text-4xl font-extrabold text-[#175E5E] mb-8 text-center">Admin Dashboard</h1>
 
           {/* Stats Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div className="bg-white shadow-md rounded-lg p-6 border-l-4 border-[#175E5E]">
-              <h2 className="text-xl font-semibold text-[#175E5E]">Total Customers</h2>
-              <p className="text-4xl font-bold text-[#175E5E] mt-4">{usersCount}</p>
+          {/* Enhanced Stats Section */}
+          {/* Enhanced Stats Section — 6 cards in one row, icons with white background */}
+          <div className="flex flex-wrap justify-between gap-4 mb-10">
+            {/* Total Users */}
+            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-[#175E5E] to-[#1e7a7a] text-white shadow-lg rounded-xl p-3 flex-1 min-w-[150px] transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-white bg-opacity-20 p-4 rounded-full mb-3">
+                <FaUsers className="text-3xl" />
+              </div>
+              <h2 className="text-lg font-semibold">Total Users</h2>
+              <p className="text-3xl font-bold mt-1">{usersCount}</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-6 border-l-4 border-yellow-500">
-              <h2 className="text-xl font-semibold text-[#175E5E]">Total Drivers</h2>
-              <p className="text-4xl font-bold text-yellow-500 mt-4">{driversCount}</p>
+            {/* Total Drivers */}
+            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-yellow-400 to-yellow-600 text-white shadow-lg rounded-xl p-3 flex-1 min-w-[150px] transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-white bg-opacity-20 p-4 rounded-full mb-3">
+                <FaTruck className="text-3xl" />
+              </div>
+              <h2 className="text-lg font-semibold">Total Drivers</h2>
+              <p className="text-3xl font-bold mt-1">{driversCount}</p>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-6 border-l-4 border-green-500">
-              <h2 className="text-xl font-semibold text-[#175E5E]">Total Waste Requests</h2>
-              <p className="text-4xl font-bold text-green-500 mt-4">{wasteRequestsCount}</p>
+            {/* Total Waste Requests */}
+            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-green-400 to-green-600 text-white shadow-lg rounded-xl p-3 flex-1 min-w-[150px] transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-white bg-opacity-20 p-4 rounded-full mb-3">
+                <FaRecycle className="text-3xl" />
+              </div>
+              <h2 className="text-lg font-semibold">Total Requests</h2>
+              <p className="text-3xl font-bold mt-1">{wasteRequestsCount}</p>
+            </div>
+
+            {/* Pending Requests */}
+            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-orange-400 to-orange-600 text-white shadow-lg rounded-xl p-3 flex-1 min-w-[150px] transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-white bg-opacity-20 p-4 rounded-full mb-3">
+                <FaClock className="text-3xl" />
+              </div>
+              <h2 className="text-lg font-semibold">Pending</h2>
+              <p className="text-3xl font-bold mt-1">
+                {wasteRequests.filter((req) => req.status === "pending").length}
+              </p>
+            </div>
+
+            {/* Picked-up Requests */}
+            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-blue-400 to-blue-600 text-white shadow-lg rounded-xl p-3 flex-1 min-w-[150px] transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-white bg-opacity-20 p-4 rounded-full mb-3">
+                <FaCheckCircle className="text-3xl" />
+              </div>
+              <h2 className="text-lg font-semibold">Picked-up</h2>
+              <p className="text-3xl font-bold mt-1">
+                {wasteRequests.filter((req) => req.status === "picked-up").length}
+              </p>
+            </div>
+
+            {/* Rejected Requests */}
+            <div className="flex flex-col items-center justify-center bg-gradient-to-br from-red-500 to-red-700 text-white shadow-lg rounded-xl p-3 flex-1 min-w-[150px] transform hover:scale-105 transition-transform duration-300">
+              <div className="bg-white bg-opacity-20 p-4 rounded-full mb-3">
+                <FaTrashAlt className="text-3xl" />
+              </div>
+              <h2 className="text-lg font-semibold">Rejected</h2>
+              <p className="text-3xl font-bold mt-1">
+                {wasteRequests.filter((req) => req.status === "rejected").length}
+              </p>
             </div>
           </div>
 
@@ -162,7 +210,7 @@ const AdminHomePage = () => {
             </div>
 
             {selectedRequest && (
-              <div className="w-full lg:w-1/3 bg-white p-4 rounded-lg shadow-md">
+              <div className="w-full lg:w-1/3 bg-[#E6F4F1] p-4 rounded-lg shadow-md">
                 <h2 className="text-xl font-bold text-[#175E5E] mb-4">
                   Waste Collection Request [
                   {selectedRequest.status === "picked-up" ? (
@@ -188,7 +236,7 @@ const AdminHomePage = () => {
                   {selectedRequest.wasteItems.map((item, index) => (
                     <span
                       key={index}
-                      className="px-3 py-1 bg-green-100 text-green-700 font-medium rounded-full text-sm shadow-sm"
+                      className="px-3 py-1 bg-green-200 text-green-700 font-medium rounded-full text-sm shadow-sm"
                     >
                       {item.type} — {item.quantity} kg
                     </span>
@@ -274,8 +322,8 @@ const AdminHomePage = () => {
                 }}
                 className={`px-5 py-2 rounded-lg shadow-md transition-all duration-300 ${
                   selectedFilter === status
-                    ? `bg-${getStatusColor(status)}-500 text-white`
-                    : "bg-white text-[#175E5E] border border-[#175E5E] hover:bg-[#175E5E] hover:text-white"
+                    ? "bg-[#175E5E] text-white"
+                    : "text-[#175E5E] border border-[#175E5E] hover:bg-[#175E5E] hover:text-white"
                 }`}
               >
                 {status === "all"

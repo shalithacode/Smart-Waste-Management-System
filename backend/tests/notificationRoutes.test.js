@@ -1,3 +1,7 @@
+/**
+ * Test for Admin routes
+ * Verifies that admin can access the all-waste-requests endpoint.
+ */
 import { api, expectResponse } from "./setup.test.js";
 
 let adminToken;

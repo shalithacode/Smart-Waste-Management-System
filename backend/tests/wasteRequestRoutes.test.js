@@ -1,3 +1,8 @@
+/**
+ * Tests for Waste Request routes
+ * Covers creation, driver assignment, pickup marking, and role restrictions.
+ */
+
 import request from "supertest";
 import mongoose from "mongoose";
 import { expect } from "chai";
@@ -7,14 +12,13 @@ import WasteRequest from "../models/WasteRequest.js";
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../config/db.js";
 
-// Setup variables for the test
+// Test environment setup
 let userToken, adminToken, driverToken;
 let userId, adminId, driverId;
 
 before(function (done) {
-  this.timeout(10000); // Set timeout to 10 seconds
-  // MongoDB connection and setup code
-  // Ensure to call done() after the async operations are done
+  this.timeout(10000);
+
   done();
 });
 
@@ -23,7 +27,7 @@ before(async () => {
   await User.deleteMany({});
   await WasteRequest.deleteMany({});
 
-  // Create a user, admin, and driver for testing
+  // Create users for all roles
   const user = await User.create({
     name: "Test User",
     email: "user@example.com",
@@ -51,7 +55,7 @@ before(async () => {
   });
   driverId = driver._id;
 
-  // Generate JWT tokens for authentication
+  // Auth tokens for each role
   userToken = jwt.sign({ userId: userId, role: "user" }, jwtSecret, { expiresIn: "4h" });
   adminToken = jwt.sign({ userId: adminId, role: "admin" }, jwtSecret, { expiresIn: "4h" });
   driverToken = jwt.sign({ userId: driverId, role: "driver" }, jwtSecret, { expiresIn: "4h" });

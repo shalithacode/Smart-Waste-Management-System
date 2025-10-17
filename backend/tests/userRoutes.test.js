@@ -1,4 +1,7 @@
-// userRoutes.test.js
+/**
+ * Tests for User authentication and profile routes
+ * Covers registration, login, and authenticated profile access.
+ */
 import { api, expectResponse } from "./setup.test.js";
 
 describe("🧪 User Routes", () => {

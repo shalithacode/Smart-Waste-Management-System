@@ -1,3 +1,8 @@
+/**
+ * Tests for Admin routes
+ * Verifies access control and data retrieval for admin-only endpoints.
+ */
+
 import request from "supertest";
 import mongoose from "mongoose";
 import { expect } from "chai";
@@ -7,19 +12,17 @@ import WasteRequest from "../models/WasteRequest.js";
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../config/db.js";
 
-// Variables for holding tokens and IDs
 let adminToken, userToken, driverToken;
 let adminId, userId, driverId;
 
+// Global test setup
 before(function (done) {
   this.timeout(10000); // Set timeout to 10 seconds
-  // MongoDB connection and setup code
-  // Ensure to call done() after the async operations are done
   done();
 });
 
 before(async () => {
-  // Clear previous data
+  // Ensure a clean database before starting tests
   await User.deleteMany({});
   await WasteRequest.deleteMany({});
 
@@ -57,19 +60,18 @@ before(async () => {
   driverToken = jwt.sign({ userId: driverId, role: "driver" }, jwtSecret, { expiresIn: "4h" });
 });
 
-// Clean up after each test
+// Reset data between test cases
 afterEach(async () => {
   await WasteRequest.deleteMany({});
 });
 
-// Close the database connection after all tests
+// Close DB after all tests
 after(async () => {
   await mongoose.connection.close();
 });
 
 describe("Admin Routes", () => {
   it("should allow an admin to view all waste requests", async () => {
-    // Create a sample waste request
     await WasteRequest.create({
       wasteType: ["Plastic Waste"],
       location: {

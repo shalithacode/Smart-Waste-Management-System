@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import backgroundImage from "../../assets/images/background.jpg";
 
 const HomePage = () => {
   const navigate = useNavigate(); // Initialize the useNavigate hook
@@ -11,24 +12,18 @@ const HomePage = () => {
     navigate("/register"); // Navigate to '/selection' when clicked
   };
 
-  // Inline style for light white grid background
-  const gridBackgroundStyle = {
-    backgroundImage: `
-      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px)
-    `,
-    backgroundSize: "10px 10px", // Smaller grid size
-    width: "100%",
-    minHeight: "100vh", // Full-screen grid background
-  };
-
   return (
-    <div className="flex flex-col min-h-screen" style={gridBackgroundStyle}>
+    <div className="flex flex-col min-h-screen">
       {/* Navbar */}
       <Navbar />
 
       {/* Hero Section */}
-      <main className="flex flex-col items-center justify-center flex-grow bg-[#175E5E] text-white px-4 py-8">
+      <main
+        className="relative flex flex-col items-center justify-center flex-grow text-white px-4 py-8 bg-cover bg-center"
+        style={{
+          backgroundImage: `linear-gradient(hsla(0, 0.00%, 0.00%, 0.50), rgba(0,0,0,0.5)), url(${backgroundImage})`,
+        }}
+      >
         <div className="text-center p-6 max-w-4xl">
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight">
             Welcome to{" "}

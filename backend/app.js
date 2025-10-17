@@ -16,6 +16,7 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
+// API routes
 app.use("/api/users", userRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/waste-requests", wasteRequestRoutes);

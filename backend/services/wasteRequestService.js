@@ -2,6 +2,7 @@ import WasteRequest from "../models/WasteRequest.js";
 import { notifyUser } from "./notificationService.js";
 import User from "../models/User.js";
 
+// Create a new waste request record
 export const createWasteRequest = async (requestData) => {
   try {
     const wasteRequest = new WasteRequest(requestData);
@@ -13,6 +14,7 @@ export const createWasteRequest = async (requestData) => {
   }
 };
 
+// Assign driver to a request and notify the user
 export const assignDriverToWasteRequest = async (requestId, driverId, pickupDate) => {
   const wasteRequest = await WasteRequest.findById(requestId);
 
@@ -24,6 +26,8 @@ export const assignDriverToWasteRequest = async (requestId, driverId, pickupDate
   notifyUser(wasteRequest.user, "Your waste request has been assigned to a driver.", "info");
   return wasteRequest;
 };
+
+// Reject request and notify the user
 export const rejectWasteRequest = async (requestId, message) => {
   const wasteRequest = await WasteRequest.findById(requestId);
 
@@ -35,6 +39,8 @@ export const rejectWasteRequest = async (requestId, message) => {
   notifyUser(wasteRequest.user, "Your waste request has been rejected : " + message, "warn");
   return wasteRequest;
 };
+
+// Mark as picked-up and notify user
 export const markWasteAsPickedUp = async (requestId) => {
   const wasteRequest = await WasteRequest.findById(requestId);
   wasteRequest.status = "picked-up";
@@ -43,15 +49,17 @@ export const markWasteAsPickedUp = async (requestId) => {
   return wasteRequest;
 };
 
-// New function to get all waste requests for admin
+// Fetch all requests (admin view)
 export const getAllWasteRequests = async () => {
   return await WasteRequest.find().populate("user assignedDriver"); // Optionally, populate user and driver details
 };
 
+// Fetch all requests for a user
 export const getWasteRequestsByUserId = async (userId) => {
   return await WasteRequest.find({ user: userId }); // Find all waste requests for the given user
 };
 
+// Fetch all requests in a specific street (optional feature)
 export const getWasteRequestsByStreet = async (street) => {
   try {
     const users = await User.find({ "address.street": street.trim() });

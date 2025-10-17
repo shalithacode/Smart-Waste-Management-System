@@ -1,5 +1,5 @@
-import app from './app.js';
-import dotenv from 'dotenv';
+import app from "./app.js";
+import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -10,4 +10,4 @@ const server = app.listen(PORT, () => {
   console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
 });
 
-export default server;  // Export the server instance
+export default server;

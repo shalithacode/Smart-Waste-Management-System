@@ -11,10 +11,8 @@ import { verifyToken, isAdmin, isDriver } from "../middlewares/authMiddleware.js
 
 const router = express.Router();
 
-// Create a waste request (user-specific)
 router.post("/create", verifyToken, createWasteRequest);
 
-// Assign driver to a waste request (admin-specific)
 router.post("/assign-driver", verifyToken, isAdmin, assignDriver);
 
 // Assign reject the waste request (admin-specific)

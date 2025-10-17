@@ -1,17 +1,16 @@
 import User from "../models/User.js";
 import Notification from "../models/Notification.js";
-// ✅ Mark a single notification as read or unread
+
+// Update a notification's read/unread status
 export const markNotificationStatus = async (req, res) => {
   try {
-    const { id } = req.params; // notification ID
-    const { status } = req.body; // expected value: "read" or "unread"
+    const { id } = req.params;
+    const { status } = req.body;
 
-    // Validate status
     if (!["read", "unread"].includes(status)) {
       return res.status(400).json({ message: "Invalid status value." });
     }
 
-    // Find and update notification
     const notification = await Notification.findByIdAndUpdate(id, { status });
 
     if (!notification) {
@@ -30,18 +29,18 @@ export const markNotificationStatus = async (req, res) => {
     });
   }
 };
+
+// Fetch notifications for the logged-in user
 export const getNotificationsById = async (req, res) => {
   try {
     const userId = req.user.userId;
 
-    // Find the user and populate notifications
     const user = await User.findById(userId).populate("notifications");
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Return the notifications array
     res.status(200).json({ notifications: user.notifications });
   } catch (error) {
     console.error("Error fetching notifications:", error.message);

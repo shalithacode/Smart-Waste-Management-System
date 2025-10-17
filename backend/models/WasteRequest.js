@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
 
-// Define sub-schema for waste type + quantity
+// Waste item type and quantity schema
 const wasteItemSchema = new Schema({
   type: {
     type: String,

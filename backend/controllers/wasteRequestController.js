@@ -6,7 +6,7 @@ import {
   rejectWasteRequest,
   getWasteRequestsByUserId,
 } from "../services/wasteRequestService.js";
-import qrcode from "qrcode"; // Import QR code library
+import qrcode from "qrcode";
 
 // Helper function to generate a unique waste code
 const generateWasteCode = () => {
@@ -15,6 +15,7 @@ const generateWasteCode = () => {
   return `WASTE-${randomString}-${timestamp}`;
 };
 
+// Create new waste pickup request
 export const createWasteRequest = async (req, res) => {
   try {
     const { waste, location, userId, pickupOption, pickupDate } = req.body;
@@ -25,8 +26,8 @@ export const createWasteRequest = async (req, res) => {
       });
     }
 
-    const wasteCode = generateWasteCode(); // Generate a unique waste code
-    // Create waste request without QR code first
+    const wasteCode = generateWasteCode();
+
     let wasteRequest = await createWasteRequestService({
       wasteItems: waste,
       pickupOption,
@@ -37,11 +38,9 @@ export const createWasteRequest = async (req, res) => {
       status: "pending",
     });
 
-    // Generate QR code using waste code or any other relevant info
     const qrCodeData = `Waste Code: ${wasteCode}\nUser: ${userId}\nLocation: (${location.latitude}, ${location.longitude})`;
     const qrCode = await qrcode.toDataURL(qrCodeData); // Generate base64 encoded QR code
 
-    // Update the waste request with the generated QR code
     wasteRequest.qrCode = qrCode;
     await wasteRequest.save();
 
@@ -51,6 +50,7 @@ export const createWasteRequest = async (req, res) => {
   }
 };
 
+// Admin: assign driver to request
 export const assignDriver = async (req, res) => {
   try {
     const { requestId, driverId, pickupDate } = req.body;
@@ -62,6 +62,8 @@ export const assignDriver = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+// Admin: reject waste request
 export const rejectRequest = async (req, res) => {
   try {
     const { requestId, message } = req.body;
@@ -73,6 +75,8 @@ export const rejectRequest = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+// Driver: mark request as picked up
 export const markAsPickedUp = async (req, res) => {
   try {
     const { requestId } = req.body;
@@ -83,6 +87,7 @@ export const markAsPickedUp = async (req, res) => {
   }
 };
 
+// User: get their own waste requests
 export const getUserWasteRequests = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -93,6 +98,7 @@ export const getUserWasteRequests = async (req, res) => {
   }
 };
 
+// Admin/User: get all waste requests
 export const getAllWasteRequests = async (req, res) => {
   try {
     const wasteRequests = await getAllWasteRequestsService();

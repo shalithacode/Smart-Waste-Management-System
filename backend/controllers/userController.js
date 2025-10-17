@@ -9,6 +9,7 @@ import {
 } from "../services/userService.js";
 import { jwtSecret } from "../config/db.js";
 
+// User registration
 export const register = async (req, res) => {
   try {
     const { name, email, password, role, address } = req.body;
@@ -27,7 +28,7 @@ export const register = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
+// User login
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -54,6 +55,7 @@ export const login = async (req, res) => {
   }
 };
 
+// Get current user's profile
 export const getUserProfile = async (req, res) => {
   try {
     const userId = req.user.userId;
@@ -64,6 +66,7 @@ export const getUserProfile = async (req, res) => {
   }
 };
 
+// Get all registered drivers (admin only)
 export const getAllDrivers = async (req, res) => {
   try {
     const drivers = await findUsersByRole("driver");
@@ -73,6 +76,7 @@ export const getAllDrivers = async (req, res) => {
   }
 };
 
+// Get total number of users (admin only)
 export const getUsersCount = async (req, res) => {
   try {
     const count = await getUsersCountByRole("user"); // counts all users

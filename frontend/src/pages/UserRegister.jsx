@@ -4,19 +4,10 @@ import { useNavigate, Link } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
+import { initialUser } from "../constants/strings";
 
 const UserRegister = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    address: {
-      street: "",
-      city: "",
-      postalCode: "",
-    },
-    role: "user", // Default role is user
-  });
+  const [formData, setFormData] = useState(initialUser);
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();

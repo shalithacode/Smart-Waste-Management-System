@@ -14,8 +14,7 @@ const CreateWasteRequest = () => {
   const [pickupLocation, setPickupLocation] = useState(null);
   const { auth } = useAuth();
   const navigate = useNavigate();
-  const [qrCode, setQrCode] = useState(null);
-  const [wasteCode, setWasteCode] = useState(null); // State to store the Waste Code
+
   const [loading, setLoading] = useState(false);
 
   // Handle creating the waste request
@@ -35,10 +34,6 @@ const CreateWasteRequest = () => {
       });
 
       alert("Waste request created successfully!");
-
-      // Set the QR code and waste code from the response to state
-      setQrCode(response.data.qrCode);
-      setWasteCode(response.data.wasteCode); // Assuming the response contains a wasteCode
 
       // Navigate to the confirmation page
       navigate("/confirmation", { state: { qrCode: response.data.qrCode, wasteCode: response.data.wasteCode } });
@@ -61,14 +56,6 @@ const CreateWasteRequest = () => {
       </div>
     );
   }
-
-  // Function to download the QR code
-  const handleDownloadQrCode = () => {
-    const a = document.createElement("a");
-    a.href = qrCode;
-    a.download = "waste-request-qr-code.png";
-    a.click();
-  };
 
   return (
     <div className="flex flex-col min-h-screen" style={gridBackgroundStyle}>

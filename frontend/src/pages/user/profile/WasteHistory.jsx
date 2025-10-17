@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import cleanWasteAPI from "../../../api/cleanWasteAPI"; // Import your Axios instance
 import { useAuth } from "../../../context/AuthContext"; // Import auth context to get the logged-in user
-
+import { gridBackgroundStyle } from "../../../util/customStyles";
 const WasteHistory = () => {
   const [wasteRequests, setWasteRequests] = useState([]);
   const { auth } = useAuth(); // Get authenticated user info from the context
@@ -24,7 +24,7 @@ const WasteHistory = () => {
   }, [auth]);
 
   return (
-    <div className="w-full overflow-x-auto px-4 sm:px-6 py-4">
+    <div className="w-full overflow-x-auto px-4 sm:px-6 py-4" style={gridBackgroundStyle}>
       <h2 className="text-xl font-semibold text-[#175E5E] mb-6">Your Waste Request History</h2>
       <table className="min-w-full bg-white shadow-md rounded-lg w-full">
         <thead>

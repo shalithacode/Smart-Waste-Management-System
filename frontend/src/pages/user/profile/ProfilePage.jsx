@@ -5,6 +5,7 @@ import { getStatusColor } from "../../../util/customStyles";
 import cleanWasteAPI from "../../../api/wiseWasteAPI"; // Import your Axios instance
 import { useAuth } from "../../../context/AuthContext"; // Import auth context to get the logged-in user
 import { getLocationName } from "../../../util/location";
+import { gridBackgroundStyle } from "../../../util/customStyles";
 
 const ProfilePage = () => {
   const [wasteRequests, setWasteRequests] = useState([]);
@@ -42,17 +43,6 @@ const ProfilePage = () => {
       fetchLocationNames();
     }
   }, [wasteRequests]);
-
-  // Inline style for light grey grid background
-  const gridBackgroundStyle = {
-    backgroundImage: `
-      linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)
-    `,
-    backgroundSize: "10px 10px", // Smaller grid size
-    width: "100%",
-    minHeight: "100vh", // Full-screen grid background
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100" style={gridBackgroundStyle}>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import UserNav from "../../../components/UserNav";
 import Footer from "../../../components/Footer";
-
 import cleanWasteAPI from "../../../api/wiseWasteAPI";
+import { gridBackgroundStyle } from "../../../util/customStyles";
 
 const UserNotification = () => {
   const [notifications, setNotifications] = useState([]);
@@ -34,17 +34,6 @@ const UserNotification = () => {
     } catch (error) {
       console.error("Error marking notification as read:", error.response?.data || error.message);
     }
-  };
-
-  // Inline style for the light grey grid background
-  const gridBackgroundStyle = {
-    backgroundImage: `
-      linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)
-    `,
-    backgroundSize: "10px 10px",
-    width: "100%",
-    minHeight: "100vh",
   };
 
   return (

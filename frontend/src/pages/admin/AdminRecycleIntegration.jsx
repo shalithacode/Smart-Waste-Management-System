@@ -1,33 +1,10 @@
-import React, { useState, useEffect } from "react";
-import AdminNav from "../../components/AdminNav"; // Import Navbar
-import Footer from "../../components/Footer"; // Import Footer
-import Button from "../../components/Button"; // Import Button
+import AdminNav from "../../components/AdminNav";
+import Footer from "../../components/Footer";
+import Button from "../../components/Button";
+import { recycleCenters } from "../../constants/strings";
+import { gridBackgroundStyle } from "../../util/customStyles";
 
 const AdminRecycleDashboard = () => {
-  const [recycleCenters, setRecycleCenters] = useState([
-    {
-      id: 1,
-      name: "Malabe Recycle Center",
-      capacityUsed: 60, // Percentage
-      materialTypes: ["Plastic", "Paper"],
-      totalCapacity: 200, // Tons per day
-    },
-    {
-      id: 2,
-      name: "Kaduwela Recycle Center",
-      capacityUsed: 85,
-      materialTypes: ["E-waste", "Metal"],
-      totalCapacity: 150,
-    },
-    {
-      id: 3,
-      name: "Pittugala Recycling Facility",
-      capacityUsed: 45,
-      materialTypes: ["Organic", "Plastic"],
-      totalCapacity: 300,
-    },
-  ]); // Simulated recycling centers data
-
   // Function to simulate adding a new recycle center
   const addNewRecycleCenter = () => {
     // You would typically navigate to a form page or open a modal for adding a new center
@@ -35,7 +12,7 @@ const AdminRecycleDashboard = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-100">
+    <div className="flex flex-col min-h-screen bg-gray-100" style={gridBackgroundStyle}>
       <AdminNav /> {/* Navbar component */}
       <main className="flex-grow flex flex-col items-center justify-center px-4 py-6 sm:py-12 md:ml-64">
         <div className="bg-white shadow-lg rounded-lg p-6 sm:p-8 max-w-6xl w-full">

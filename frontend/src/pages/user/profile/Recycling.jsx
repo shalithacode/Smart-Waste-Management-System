@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserNav from "../../../components/UserNav"; // Adjust the path as needed
 import Footer from "../../../components/Footer"; // Adjust the path as needed
-
+import { gridBackgroundStyle } from "../../../util/customStyles";
 import { Pie } from "react-chartjs-2"; // Import Pie chart from react-chartjs-2
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js"; // Import necessary elements from Chart.js
 
@@ -57,17 +57,6 @@ const Recycling = () => {
 
     return () => clearInterval(interval); // Cleanup the interval on component unmount
   }, [finalRevenue]);
-
-  // Inline style for light grey grid background (responsive)
-  const gridBackgroundStyle = {
-    backgroundImage: `
-      linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)
-    `,
-    backgroundSize: "10px 10px", // Smaller grid size
-    width: "100%",
-    minHeight: "100vh", // Full-screen grid background
-  };
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-100" style={gridBackgroundStyle}>

@@ -4,6 +4,7 @@ import AdminNav from "../../components/AdminNav";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Footer from "../../components/Footer"; // Import the Footer component
+import { gridBackgroundStyle } from "../../util/customStyles";
 
 const DriverAssignPage = () => {
   const [drivers, setDrivers] = useState([]); // List of drivers
@@ -52,17 +53,6 @@ const DriverAssignPage = () => {
       console.error("Error assigning driver:", error);
       alert(error.response?.data?.message || "Failed to assign driver. Please try again."); // Show specific error message
     }
-  };
-
-  // Inline style for light grey grid background
-  const gridBackgroundStyle = {
-    backgroundImage: `
-      linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)
-    `,
-    backgroundSize: "10px 10px", // Smaller grid size
-    width: "100%",
-    minHeight: "100vh", // Full-screen grid background
   };
 
   return (

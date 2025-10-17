@@ -3,6 +3,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { FaBars, FaTimes } from "react-icons/fa";
 import { useAuth } from "../context/AuthContext";
 import wasteAPI from "../api/wiseWasteAPI"; // make sure path is correct
+import { navLinks } from "../constants/strings";
 
 const UserNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -35,13 +36,6 @@ const UserNav = () => {
   }, [auth]);
 
   // Navigation links (customized for user dashboard)
-  const navLinks = [
-    { to: "/UserHomePage", label: "🏠 Home" },
-    { to: "/BulkWaste", label: "🕒 Schedule Collection" },
-    { to: "/Profile", label: "🗑️ Waste Request History" },
-    { to: "/notifications", label: "🔔 Notifications" },
-    { to: "/membership", label: "💳 Subscription" },
-  ];
 
   return (
     <>

@@ -3,21 +3,8 @@ import UserNav from "../../components/UserNav";
 import Footer from "../../components/Footer";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
-
-const wasteTypesData = [
-  { type: "Plastic Waste", icon: "♻️" },
-  { type: "Metal Waste", icon: "🛠️" },
-  { type: "Organic Waste", icon: "🍂" },
-  { type: "Paper Waste", icon: "🧾" },
-  { type: "E-Waste", icon: "💻" },
-  { type: "Hazardous Waste", icon: "☠️" },
-];
-
-const pickupOptions = [
-  { option: "Immediate Pickup", icon: "🚛" },
-  { option: "Scheduled Pickup", icon: "🕒" },
-  { option: "Flexible Pickup", icon: "🔄" },
-];
+import { wasteTypesData, pickupOptions } from "../../constants/strings";
+import { gridBackgroundStyle } from "../../util/customStyles";
 
 const BulkWaste = () => {
   const [wasteTypes, setWasteTypes] = useState([]);
@@ -85,16 +72,6 @@ const BulkWaste = () => {
     navigate("/sorting-guidelines", {
       state: { wasteQuantity, selectedPickupOption, pickupDate },
     });
-  };
-
-  const gridBackgroundStyle = {
-    backgroundImage: `
-      linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)
-    `,
-    backgroundSize: "10px 10px",
-    width: "100%",
-    minHeight: "100vh",
   };
 
   return (

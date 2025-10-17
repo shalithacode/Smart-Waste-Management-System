@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import wasteAPI from "../../api/wiseWasteAPI";
 import AdminNav from "../../components/AdminNav"; // Import the Navbar
 import Footer from "../../components/Footer"; // Import the Footer
+import { gridBackgroundStyle } from "../../util/customStyles";
 
 const AddPlaceForm = () => {
   const [streetName, setStreetName] = useState("");
@@ -26,17 +27,6 @@ const AddPlaceForm = () => {
 
     // Clear the success message after 3 seconds
     setTimeout(() => setSuccessMessage(""), 3000);
-  };
-
-  // Inline style for light grey grid background
-  const gridBackgroundStyle = {
-    backgroundImage: `
-      linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)
-    `,
-    backgroundSize: "10px 10px", // Smaller grid size
-    width: "100%",
-    minHeight: "100vh", // Full-screen grid background
   };
 
   return (

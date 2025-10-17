@@ -5,7 +5,6 @@ import Footer from "../../components/Footer";
 import Map from "../../components/Map";
 import Button from "../../components/Button";
 import AdminNav from "../../components/AdminNav";
-import { getStatusColor } from "../../util/customStyles";
 import { FaUsers, FaTruck, FaRecycle, FaClock, FaCheckCircle, FaTrashAlt } from "react-icons/fa";
 
 const AdminHomePage = () => {

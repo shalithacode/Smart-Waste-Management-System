@@ -1,14 +1,11 @@
 import React, { useState } from "react";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
+import { initalContact } from "../../constants/strings";
+import { gridBackgroundStyle } from "../../util/customStyles";
 
 const ContactUs = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState(initalContact);
 
   const [success, setSuccess] = useState(false);
 
@@ -31,7 +28,7 @@ const ContactUs = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100" style={gridBackgroundStyle}>
       <div className="flex-1  flex flex-col">
         <Navbar />
         <main className="flex-grow flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8">

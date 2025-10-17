@@ -1,16 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
 
 const AboutPage = () => {
-  const navigate = useNavigate(); // Initialize the useNavigate hook
-
-  // Function to handle navigation when 'Get Started' is clicked
-  const handleGetStartedClick = () => {
-    navigate("/selection"); // Navigate to '/selection' when clicked
-  };
-
   // Inline style for light white grid background
   const gridBackgroundStyle = {
     backgroundImage: `

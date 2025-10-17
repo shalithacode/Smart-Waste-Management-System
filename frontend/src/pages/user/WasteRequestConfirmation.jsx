@@ -4,6 +4,7 @@ import UserNav from "../../components/UserNav";
 import Footer from "../../components/Footer";
 import Button from "../../components/Button";
 import { ClipboardIcon, ArrowDownTrayIcon } from "@heroicons/react/24/outline"; // Updated Heroicons imports
+import { gridBackgroundStyle } from "../../util/customStyles";
 
 const WasteRequestConfirmation = () => {
   const location = useLocation();
@@ -24,17 +25,6 @@ const WasteRequestConfirmation = () => {
       .writeText(wasteCode)
       .then(() => alert("Waste code copied to clipboard!"))
       .catch((err) => console.error("Failed to copy: ", err));
-  };
-
-  // Inline style for light grey grid background
-  const gridBackgroundStyle = {
-    backgroundImage: `
-      linear-gradient(90deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px),
-      linear-gradient(180deg, rgba(0, 0, 0, 0.02) 1px, transparent 1px)
-    `,
-    backgroundSize: "10px 10px", // Smaller grid size
-    width: "100%",
-    minHeight: "100vh", // Full-screen grid background
   };
 
   return (
